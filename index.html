@@ -1,0 +1,3445 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#221F20">
+<title>METKRAFT Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--red:#D31734;--ink:#221F20;--bg:#fff;--soft:#F4F4F5;--line:#DCDCE0;--mut:#6B6B72;--c0:#D31734;--c1:#221F20;--c2:#2466B0;--c3:#C97A00;--ok:#1E8E4E}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:Montserrat,Inter,"Segoe UI",Arial,sans-serif;font-weight:500;color:var(--ink);background:var(--bg);-webkit-tap-highlight-color:transparent}
+#app{min-height:100%;display:flex;flex-direction:column}
+h1,h2,h3{margin:0;font-weight:900;letter-spacing:.01em}
+button{font:inherit;cursor:pointer}
+input,select,textarea{font:inherit;color:inherit}
+.bar{display:flex;align-items:center;gap:12px;padding:10px 18px;background:#fff;border-bottom:3px solid var(--ink)}
+.brand{font-weight:900;font-size:20px;letter-spacing:.02em;text-decoration:none;color:var(--ink);white-space:nowrap}
+.brand b{color:var(--red);font-weight:900}
+.brand span{font-size:11px;letter-spacing:.28em;margin-left:8px;padding:3px 7px;background:var(--ink);color:#fff;vertical-align:middle}
+.sp{flex:1}
+.btn{border:2px solid var(--ink);background:#fff;color:var(--ink);padding:9px 16px;border-radius:6px;font-weight:700;font-size:14px;white-space:nowrap}
+.btn:hover{background:var(--soft)}
+.btn.pri{background:var(--red);border-color:var(--red);color:#fff}
+.btn.pri:hover{filter:brightness(.92)}
+.btn.dark{background:var(--ink);color:#fff}
+.btn.sm{padding:5px 10px;font-size:12px}
+.btn.big{padding:14px 28px;font-size:18px}
+.btn:disabled{opacity:.4;cursor:not-allowed}
+.btn.ghost{border-color:transparent}
+.wrap{width:100%;max-width:1080px;margin:0 auto;padding:22px 18px}
+.mut{color:var(--mut)}
+.card{border:2px solid var(--line);border-radius:10px;padding:16px;background:#fff}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.field{width:100%;padding:11px 12px;border:2px solid var(--line);border-radius:6px;background:#fff}
+.field:focus{outline:none;border-color:var(--ink)}
+label.l{display:block;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:12px 0 5px;color:var(--mut)}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:var(--soft)}
+.warn{background:#FFF4D6;border:2px solid #E0B040;padding:10px 14px;border-radius:8px;font-size:14px}
+.banner{background:var(--ink);color:#fff;padding:12px 16px;border-radius:8px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+#toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:var(--ink);color:#fff;padding:10px 18px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99;max-width:90vw}
+#toast.on{opacity:1}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.55);display:flex;align-items:center;justify-content:center;padding:16px;z-index:50}
+.modal{background:#fff;border-radius:12px;padding:22px;width:100%;max-width:520px;max-height:92vh;overflow:auto;border-top:6px solid var(--red)}
+.seg{display:inline-flex;border:2px solid var(--ink);border-radius:6px;overflow:hidden}
+.seg button{border:0;background:#fff;padding:8px 14px;font-weight:700;font-size:13px}
+.seg button.on{background:var(--ink);color:#fff}
+.chk{display:flex;gap:8px;align-items:center;margin:8px 0;font-size:14px}
+.chk input{width:18px;height:18px;accent-color:var(--red)}
+.dot{width:10px;height:10px;border-radius:50%;background:#bbb;display:inline-block}
+.dot.on{background:var(--ok)}
+/* home */
+.home{flex:1;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(#fff 0 62%,var(--ink) 62% 100%)}
+.joinbox{width:100%;max-width:400px;background:#fff;border:3px solid var(--ink);border-radius:12px;padding:26px;text-align:center;box-shadow:8px 8px 0 var(--red)}
+.joinbox h1{font-size:30px;margin-bottom:4px}
+.pinin{font-size:30px;font-weight:900;letter-spacing:.25em;text-align:center;padding:12px}
+.namein{font-size:20px;font-weight:700;text-align:center}
+/* editor */
+.qcard{border:2px solid var(--line);border-left:6px solid var(--ink);border-radius:8px;padding:14px;margin-bottom:14px;background:#fff}
+.qcard.bad{border-left-color:var(--red)}
+.qhead{display:flex;gap:8px;align-items:center;margin-bottom:8px;flex-wrap:wrap}
+.qnum{font-weight:900;font-size:18px;min-width:38px}
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.opt{display:flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:6px;padding:4px 8px}
+.opt .ltr{width:28px;height:28px;border-radius:5px;color:#fff;font-weight:900;display:flex;align-items:center;justify-content:center;flex:none}
+.opt input[type=text]{border:0;outline:0;flex:1;min-width:0;padding:6px 2px;background:transparent}
+.opt input[type=checkbox]{width:20px;height:20px;accent-color:var(--ok)}
+.thumb{max-height:90px;border-radius:6px;border:1px solid var(--line)}
+@media(max-width:640px){.opts{grid-template-columns:1fr}}
+/* host stage */
+.stage{flex:1;display:flex;flex-direction:column;background:#fff;min-height:0}
+.hud{display:flex;align-items:center;gap:14px;padding:8px 18px;background:var(--ink);color:#fff;font-weight:700;font-size:15px}
+.hud .pin{background:#fff;color:var(--ink);padding:2px 10px;border-radius:5px;font-weight:900;letter-spacing:.1em}
+.hud .btn{border-color:#fff;background:transparent;color:#fff}
+.hud .btn:hover{background:rgba(255,255,255,.15)}
+.hud .btn.pri{background:var(--red);border-color:var(--red)}
+.hud .seg{border-color:#fff}.hud .seg button{background:transparent;color:#fff;padding:5px 10px}.hud .seg button.on{background:#fff;color:var(--ink)}
+.qstage .tile{min-height:13vh}
+.lobby{flex:1;display:grid;grid-template-columns:minmax(300px,420px) 1fr;min-height:0}
+.lobL{background:var(--soft);padding:26px;display:flex;flex-direction:column;align-items:center;gap:10px;border-right:3px solid var(--ink);text-align:center}
+.lobL .url{font-weight:700;font-size:15px;word-break:break-all}
+.bigpin{font-size:clamp(46px,7vw,84px);font-weight:900;letter-spacing:.08em;line-height:1;color:var(--red)}
+.qr{background:#fff;padding:8px;border:3px solid var(--ink);border-radius:8px;line-height:0}
+.qr svg{width:210px;height:210px}
+.lobR{padding:22px;overflow:auto}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chip{border:2px solid var(--ink);border-radius:99px;padding:6px 14px;font-weight:700;background:#fff}
+.chip.new{animation:pop .3s}
+.chip:hover{background:var(--red);border-color:var(--red);color:#fff;text-decoration:line-through}
+.chip i{font-style:normal;font-size:11px;opacity:.7;margin-left:6px}
+@keyframes pop{from{transform:scale(.6);opacity:0}to{transform:scale(1);opacity:1}}
+.qstage{flex:1;display:flex;flex-direction:column;padding:18px 22px;gap:14px;min-height:0}
+.qtext{font-size:clamp(24px,3.6vw,46px);font-weight:900;text-align:center;line-height:1.2;padding:8px 0}
+.qmid{flex:1;display:flex;align-items:center;justify-content:center;gap:28px;min-height:120px}
+.qmid img{max-height:38vh;max-width:60vw;border-radius:10px;border:3px solid var(--ink)}
+.clock{width:120px;height:120px;border-radius:50%;border:8px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:48px;font-weight:900;flex:none}
+.clock.low{border-color:var(--red);color:var(--red)}
+.cnt{text-align:center;flex:none}
+.cnt b{display:block;font-size:48px;font-weight:900;line-height:1}
+.tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tile{display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:10px;color:#fff;font-weight:700;font-size:clamp(17px,2.1vw,28px);min-height:76px;border:0;text-align:left;position:relative}
+.tile svg{width:38px;height:38px;flex:none;fill:#fff}
+.tile .lt{font-weight:900;font-size:1.1em;opacity:.9}
+.t0{background:var(--c0)}.t1{background:var(--c1)}.t2{background:var(--c2)}.t3{background:var(--c3)}
+.tile.dim{opacity:.28}
+.tile .num{margin-left:auto;font-weight:900;font-size:1.2em;background:rgba(255,255,255,.2);padding:2px 12px;border-radius:6px}
+.tile.okk::after{content:"✓";position:absolute;right:-8px;top:-10px;background:var(--ok);color:#fff;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:900;border:3px solid #fff}
+.bars{display:flex;align-items:flex-end;justify-content:center;gap:18px;height:30vh;min-height:150px}
+.barc{width:90px;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+.barc b{font-size:24px;font-weight:900}
+.barc div{width:100%;border-radius:6px 6px 0 0;min-height:6px;transition:height .5s}
+.board{flex:1;width:100%;max-width:820px;margin:0 auto;padding:22px;display:flex;flex-direction:column;gap:10px;justify-content:center}
+.brow{display:flex;align-items:center;gap:14px;border:3px solid var(--ink);border-radius:10px;padding:12px 18px;font-size:24px;font-weight:700;background:#fff;animation:pop .3s}
+.brow:first-of-type{background:var(--ink);color:#fff}
+.brow .rk{font-weight:900;width:44px}
+.brow .sc{margin-left:auto;font-weight:900}
+.brow .gn{font-size:15px;color:var(--ok);font-weight:900}
+.podium{flex:1;display:flex;align-items:flex-end;justify-content:center;gap:14px;padding:20px 20px 0;min-height:300px}
+.pod{width:min(26vw,240px);text-align:center;animation:rise .8s both}
+.pod .nm{font-size:clamp(16px,2.2vw,28px);font-weight:900;word-break:break-word}
+.pod .sc{font-weight:700;margin-bottom:8px}
+.pod .blk{background:var(--ink);color:#fff;font-size:64px;font-weight:900;border-radius:10px 10px 0 0;display:flex;align-items:flex-start;justify-content:center;padding-top:14px}
+.pod.p1 .blk{height:230px;background:var(--red)}.pod.p2 .blk{height:165px}.pod.p3 .blk{height:115px;background:#55525A}
+.pod.p2{animation-delay:.5s}.pod.p3{animation-delay:.1s}.pod.p1{animation-delay:1s}
+@keyframes rise{from{transform:translateY(60px);opacity:0}to{transform:none;opacity:1}}
+.ready{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;padding:24px;text-align:center}
+.ready .n{font-size:16px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--red)}
+.prog{height:10px;background:var(--line);border-radius:99px;overflow:hidden;width:min(600px,80vw)}
+.prog i{display:block;height:100%;background:var(--red);width:100%}
+@media(max-width:800px){.lobby{grid-template-columns:1fr}.lobL{border-right:0;border-bottom:3px solid var(--ink)}}
+/* player */
+.pl{flex:1;display:flex;flex-direction:column;min-height:100dvh;background:#fff}
+.pltop{display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--ink);color:#fff;font-weight:700;font-size:14px}
+.pltop .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.plmid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:22px;text-align:center;gap:14px}
+.plmid h1{font-size:30px}
+.plq{padding:12px 14px;font-weight:700;font-size:17px;text-align:center;border-bottom:2px solid var(--line)}
+.pltiles{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px}
+.pltiles.two{grid-template-columns:1fr}
+.pltiles .tile{flex-direction:column;justify-content:center;text-align:center;font-size:17px;gap:8px;padding:10px;min-height:110px;word-break:break-word}
+.pltiles .tile svg{width:44px;height:44px}
+.pltiles .tile.sel{outline:5px solid #fff;outline-offset:-9px}
+.pltiles .tile:active{filter:brightness(.85)}
+.pbar{height:8px;background:var(--line)}
+.pbar i{display:block;height:100%;background:var(--red)}
+.big-ic{width:110px;height:110px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:60px;color:#fff;font-weight:900}
+.res-ok{background:var(--ok)}.res-no{background:var(--red)}.res-na{background:#77747C}
+.fullc{color:#fff}
+.fullc.okb{background:var(--ok)}.fullc.nob{background:var(--red)}.fullc.nab{background:#55525A}
+.pts{font-size:26px;font-weight:900;background:rgba(0,0,0,.25);padding:6px 18px;border-radius:8px}
+.plfoot{display:flex;justify-content:space-between;padding:12px 16px;background:var(--soft);font-weight:900;border-top:3px solid var(--ink)}
+.teams{display:grid;gap:8px;width:100%;max-width:340px}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line)}
+table.t th{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mut)}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast"></div>
+<script>//---------------------------------------------------------------------
+//
+// QR Code Generator for JavaScript
+//
+// Copyright (c) 2009 Kazuhiko Arase
+//
+// URL: http://www.d-project.com/
+//
+// Licensed under the MIT license:
+//  http://www.opensource.org/licenses/mit-license.php
+//
+// The word 'QR Code' is registered trademark of
+// DENSO WAVE INCORPORATED
+//  http://www.denso-wave.com/qrcode/faqpatent-e.html
+//
+//---------------------------------------------------------------------
+
+var qrcode = function() {
+
+  //---------------------------------------------------------------------
+  // qrcode
+  //---------------------------------------------------------------------
+
+  /**
+   * qrcode
+   * @param typeNumber 1 to 40
+   * @param errorCorrectionLevel 'L','M','Q','H'
+   */
+  var qrcode = function(typeNumber, errorCorrectionLevel) {
+
+    var PAD0 = 0xEC;
+    var PAD1 = 0x11;
+
+    var _typeNumber = typeNumber;
+    var _errorCorrectionLevel = QRErrorCorrectionLevel[errorCorrectionLevel];
+    var _modules = null;
+    var _moduleCount = 0;
+    var _dataCache = null;
+    var _dataList = [];
+
+    var _this = {};
+
+    var makeImpl = function(test, maskPattern) {
+
+      _moduleCount = _typeNumber * 4 + 17;
+      _modules = function(moduleCount) {
+        var modules = new Array(moduleCount);
+        for (var row = 0; row < moduleCount; row += 1) {
+          modules[row] = new Array(moduleCount);
+          for (var col = 0; col < moduleCount; col += 1) {
+            modules[row][col] = null;
+          }
+        }
+        return modules;
+      }(_moduleCount);
+
+      setupPositionProbePattern(0, 0);
+      setupPositionProbePattern(_moduleCount - 7, 0);
+      setupPositionProbePattern(0, _moduleCount - 7);
+      setupPositionAdjustPattern();
+      setupTimingPattern();
+      setupTypeInfo(test, maskPattern);
+
+      if (_typeNumber >= 7) {
+        setupTypeNumber(test);
+      }
+
+      if (_dataCache == null) {
+        _dataCache = createData(_typeNumber, _errorCorrectionLevel, _dataList);
+      }
+
+      mapData(_dataCache, maskPattern);
+    };
+
+    var setupPositionProbePattern = function(row, col) {
+
+      for (var r = -1; r <= 7; r += 1) {
+
+        if (row + r <= -1 || _moduleCount <= row + r) continue;
+
+        for (var c = -1; c <= 7; c += 1) {
+
+          if (col + c <= -1 || _moduleCount <= col + c) continue;
+
+          if ( (0 <= r && r <= 6 && (c == 0 || c == 6) )
+              || (0 <= c && c <= 6 && (r == 0 || r == 6) )
+              || (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
+            _modules[row + r][col + c] = true;
+          } else {
+            _modules[row + r][col + c] = false;
+          }
+        }
+      }
+    };
+
+    var getBestMaskPattern = function() {
+
+      var minLostPoint = 0;
+      var pattern = 0;
+
+      for (var i = 0; i < 8; i += 1) {
+
+        makeImpl(true, i);
+
+        var lostPoint = QRUtil.getLostPoint(_this);
+
+        if (i == 0 || minLostPoint > lostPoint) {
+          minLostPoint = lostPoint;
+          pattern = i;
+        }
+      }
+
+      return pattern;
+    };
+
+    var setupTimingPattern = function() {
+
+      for (var r = 8; r < _moduleCount - 8; r += 1) {
+        if (_modules[r][6] != null) {
+          continue;
+        }
+        _modules[r][6] = (r % 2 == 0);
+      }
+
+      for (var c = 8; c < _moduleCount - 8; c += 1) {
+        if (_modules[6][c] != null) {
+          continue;
+        }
+        _modules[6][c] = (c % 2 == 0);
+      }
+    };
+
+    var setupPositionAdjustPattern = function() {
+
+      var pos = QRUtil.getPatternPosition(_typeNumber);
+
+      for (var i = 0; i < pos.length; i += 1) {
+
+        for (var j = 0; j < pos.length; j += 1) {
+
+          var row = pos[i];
+          var col = pos[j];
+
+          if (_modules[row][col] != null) {
+            continue;
+          }
+
+          for (var r = -2; r <= 2; r += 1) {
+
+            for (var c = -2; c <= 2; c += 1) {
+
+              if (r == -2 || r == 2 || c == -2 || c == 2
+                  || (r == 0 && c == 0) ) {
+                _modules[row + r][col + c] = true;
+              } else {
+                _modules[row + r][col + c] = false;
+              }
+            }
+          }
+        }
+      }
+    };
+
+    var setupTypeNumber = function(test) {
+
+      var bits = QRUtil.getBCHTypeNumber(_typeNumber);
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[Math.floor(i / 3)][i % 3 + _moduleCount - 8 - 3] = mod;
+      }
+
+      for (var i = 0; i < 18; i += 1) {
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+        _modules[i % 3 + _moduleCount - 8 - 3][Math.floor(i / 3)] = mod;
+      }
+    };
+
+    var setupTypeInfo = function(test, maskPattern) {
+
+      var data = (_errorCorrectionLevel << 3) | maskPattern;
+      var bits = QRUtil.getBCHTypeInfo(data);
+
+      // vertical
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 6) {
+          _modules[i][8] = mod;
+        } else if (i < 8) {
+          _modules[i + 1][8] = mod;
+        } else {
+          _modules[_moduleCount - 15 + i][8] = mod;
+        }
+      }
+
+      // horizontal
+      for (var i = 0; i < 15; i += 1) {
+
+        var mod = (!test && ( (bits >> i) & 1) == 1);
+
+        if (i < 8) {
+          _modules[8][_moduleCount - i - 1] = mod;
+        } else if (i < 9) {
+          _modules[8][15 - i - 1 + 1] = mod;
+        } else {
+          _modules[8][15 - i - 1] = mod;
+        }
+      }
+
+      // fixed module
+      _modules[_moduleCount - 8][8] = (!test);
+    };
+
+    var mapData = function(data, maskPattern) {
+
+      var inc = -1;
+      var row = _moduleCount - 1;
+      var bitIndex = 7;
+      var byteIndex = 0;
+      var maskFunc = QRUtil.getMaskFunction(maskPattern);
+
+      for (var col = _moduleCount - 1; col > 0; col -= 2) {
+
+        if (col == 6) col -= 1;
+
+        while (true) {
+
+          for (var c = 0; c < 2; c += 1) {
+
+            if (_modules[row][col - c] == null) {
+
+              var dark = false;
+
+              if (byteIndex < data.length) {
+                dark = ( ( (data[byteIndex] >>> bitIndex) & 1) == 1);
+              }
+
+              var mask = maskFunc(row, col - c);
+
+              if (mask) {
+                dark = !dark;
+              }
+
+              _modules[row][col - c] = dark;
+              bitIndex -= 1;
+
+              if (bitIndex == -1) {
+                byteIndex += 1;
+                bitIndex = 7;
+              }
+            }
+          }
+
+          row += inc;
+
+          if (row < 0 || _moduleCount <= row) {
+            row -= inc;
+            inc = -inc;
+            break;
+          }
+        }
+      }
+    };
+
+    var createBytes = function(buffer, rsBlocks) {
+
+      var offset = 0;
+
+      var maxDcCount = 0;
+      var maxEcCount = 0;
+
+      var dcdata = new Array(rsBlocks.length);
+      var ecdata = new Array(rsBlocks.length);
+
+      for (var r = 0; r < rsBlocks.length; r += 1) {
+
+        var dcCount = rsBlocks[r].dataCount;
+        var ecCount = rsBlocks[r].totalCount - dcCount;
+
+        maxDcCount = Math.max(maxDcCount, dcCount);
+        maxEcCount = Math.max(maxEcCount, ecCount);
+
+        dcdata[r] = new Array(dcCount);
+
+        for (var i = 0; i < dcdata[r].length; i += 1) {
+          dcdata[r][i] = 0xff & buffer.getBuffer()[i + offset];
+        }
+        offset += dcCount;
+
+        var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
+        var rawPoly = qrPolynomial(dcdata[r], rsPoly.getLength() - 1);
+
+        var modPoly = rawPoly.mod(rsPoly);
+        ecdata[r] = new Array(rsPoly.getLength() - 1);
+        for (var i = 0; i < ecdata[r].length; i += 1) {
+          var modIndex = i + modPoly.getLength() - ecdata[r].length;
+          ecdata[r][i] = (modIndex >= 0)? modPoly.getAt(modIndex) : 0;
+        }
+      }
+
+      var totalCodeCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalCodeCount += rsBlocks[i].totalCount;
+      }
+
+      var data = new Array(totalCodeCount);
+      var index = 0;
+
+      for (var i = 0; i < maxDcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < dcdata[r].length) {
+            data[index] = dcdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      for (var i = 0; i < maxEcCount; i += 1) {
+        for (var r = 0; r < rsBlocks.length; r += 1) {
+          if (i < ecdata[r].length) {
+            data[index] = ecdata[r][i];
+            index += 1;
+          }
+        }
+      }
+
+      return data;
+    };
+
+    var createData = function(typeNumber, errorCorrectionLevel, dataList) {
+
+      var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectionLevel);
+
+      var buffer = qrBitBuffer();
+
+      for (var i = 0; i < dataList.length; i += 1) {
+        var data = dataList[i];
+        buffer.put(data.getMode(), 4);
+        buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+        data.write(buffer);
+      }
+
+      // calc num max data.
+      var totalDataCount = 0;
+      for (var i = 0; i < rsBlocks.length; i += 1) {
+        totalDataCount += rsBlocks[i].dataCount;
+      }
+
+      if (buffer.getLengthInBits() > totalDataCount * 8) {
+        throw 'code length overflow. ('
+          + buffer.getLengthInBits()
+          + '>'
+          + totalDataCount * 8
+          + ')';
+      }
+
+      // end code
+      if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
+        buffer.put(0, 4);
+      }
+
+      // padding
+      while (buffer.getLengthInBits() % 8 != 0) {
+        buffer.putBit(false);
+      }
+
+      // padding
+      while (true) {
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD0, 8);
+
+        if (buffer.getLengthInBits() >= totalDataCount * 8) {
+          break;
+        }
+        buffer.put(PAD1, 8);
+      }
+
+      return createBytes(buffer, rsBlocks);
+    };
+
+    _this.addData = function(data, mode) {
+
+      mode = mode || 'Byte';
+
+      var newData = null;
+
+      switch(mode) {
+      case 'Numeric' :
+        newData = qrNumber(data);
+        break;
+      case 'Alphanumeric' :
+        newData = qrAlphaNum(data);
+        break;
+      case 'Byte' :
+        newData = qr8BitByte(data);
+        break;
+      case 'Kanji' :
+        newData = qrKanji(data);
+        break;
+      default :
+        throw 'mode:' + mode;
+      }
+
+      _dataList.push(newData);
+      _dataCache = null;
+    };
+
+    _this.isDark = function(row, col) {
+      if (row < 0 || _moduleCount <= row || col < 0 || _moduleCount <= col) {
+        throw row + ',' + col;
+      }
+      return _modules[row][col];
+    };
+
+    _this.getModuleCount = function() {
+      return _moduleCount;
+    };
+
+    _this.make = function() {
+      if (_typeNumber < 1) {
+        var typeNumber = 1;
+
+        for (; typeNumber < 40; typeNumber++) {
+          var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, _errorCorrectionLevel);
+          var buffer = qrBitBuffer();
+
+          for (var i = 0; i < _dataList.length; i++) {
+            var data = _dataList[i];
+            buffer.put(data.getMode(), 4);
+            buffer.put(data.getLength(), QRUtil.getLengthInBits(data.getMode(), typeNumber) );
+            data.write(buffer);
+          }
+
+          var totalDataCount = 0;
+          for (var i = 0; i < rsBlocks.length; i++) {
+            totalDataCount += rsBlocks[i].dataCount;
+          }
+
+          if (buffer.getLengthInBits() <= totalDataCount * 8) {
+            break;
+          }
+        }
+
+        _typeNumber = typeNumber;
+      }
+
+      makeImpl(false, getBestMaskPattern() );
+    };
+
+    _this.createTableTag = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var qrHtml = '';
+
+      qrHtml += '<table style="';
+      qrHtml += ' border-width: 0px; border-style: none;';
+      qrHtml += ' border-collapse: collapse;';
+      qrHtml += ' padding: 0px; margin: ' + margin + 'px;';
+      qrHtml += '">';
+      qrHtml += '<tbody>';
+
+      for (var r = 0; r < _this.getModuleCount(); r += 1) {
+
+        qrHtml += '<tr>';
+
+        for (var c = 0; c < _this.getModuleCount(); c += 1) {
+          qrHtml += '<td style="';
+          qrHtml += ' border-width: 0px; border-style: none;';
+          qrHtml += ' border-collapse: collapse;';
+          qrHtml += ' padding: 0px; margin: 0px;';
+          qrHtml += ' width: ' + cellSize + 'px;';
+          qrHtml += ' height: ' + cellSize + 'px;';
+          qrHtml += ' background-color: ';
+          qrHtml += _this.isDark(r, c)? '#000000' : '#ffffff';
+          qrHtml += ';';
+          qrHtml += '"/>';
+        }
+
+        qrHtml += '</tr>';
+      }
+
+      qrHtml += '</tbody>';
+      qrHtml += '</table>';
+
+      return qrHtml;
+    };
+
+    _this.createSvgTag = function(cellSize, margin, alt, title) {
+
+      var opts = {};
+      if (typeof arguments[0] == 'object') {
+        // Called by options.
+        opts = arguments[0];
+        // overwrite cellSize and margin.
+        cellSize = opts.cellSize;
+        margin = opts.margin;
+        alt = opts.alt;
+        title = opts.title;
+      }
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      // Compose alt property surrogate
+      alt = (typeof alt === 'string') ? {text: alt} : alt || {};
+      alt.text = alt.text || null;
+      alt.id = (alt.text) ? alt.id || 'qrcode-description' : null;
+
+      // Compose title property surrogate
+      title = (typeof title === 'string') ? {text: title} : title || {};
+      title.text = title.text || null;
+      title.id = (title.text) ? title.id || 'qrcode-title' : null;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var c, mc, r, mr, qrSvg='', rect;
+
+      rect = 'l' + cellSize + ',0 0,' + cellSize +
+        ' -' + cellSize + ',0 0,-' + cellSize + 'z ';
+
+      qrSvg += '<svg version="1.1" xmlns="http://www.w3.org/2000/svg"';
+      qrSvg += !opts.scalable ? ' width="' + size + 'px" height="' + size + 'px"' : '';
+      qrSvg += ' viewBox="0 0 ' + size + ' ' + size + '" ';
+      qrSvg += ' preserveAspectRatio="xMinYMin meet"';
+      qrSvg += (title.text || alt.text) ? ' role="img" aria-labelledby="' +
+          escapeXml([title.id, alt.id].join(' ').trim() ) + '"' : '';
+      qrSvg += '>';
+      qrSvg += (title.text) ? '<title id="' + escapeXml(title.id) + '">' +
+          escapeXml(title.text) + '</title>' : '';
+      qrSvg += (alt.text) ? '<description id="' + escapeXml(alt.id) + '">' +
+          escapeXml(alt.text) + '</description>' : '';
+      qrSvg += '<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>';
+      qrSvg += '<path d="';
+
+      for (r = 0; r < _this.getModuleCount(); r += 1) {
+        mr = r * cellSize + margin;
+        for (c = 0; c < _this.getModuleCount(); c += 1) {
+          if (_this.isDark(r, c) ) {
+            mc = c*cellSize+margin;
+            qrSvg += 'M' + mc + ',' + mr + rect;
+          }
+        }
+      }
+
+      qrSvg += '" stroke="transparent" fill="black"/>';
+      qrSvg += '</svg>';
+
+      return qrSvg;
+    };
+
+    _this.createDataURL = function(cellSize, margin) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      return createDataURL(size, size, function(x, y) {
+        if (min <= x && x < max && min <= y && y < max) {
+          var c = Math.floor( (x - min) / cellSize);
+          var r = Math.floor( (y - min) / cellSize);
+          return _this.isDark(r, c)? 0 : 1;
+        } else {
+          return 1;
+        }
+      } );
+    };
+
+    _this.createImgTag = function(cellSize, margin, alt) {
+
+      cellSize = cellSize || 2;
+      margin = (typeof margin == 'undefined')? cellSize * 4 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+
+      var img = '';
+      img += '<img';
+      img += '\u0020src="';
+      img += _this.createDataURL(cellSize, margin);
+      img += '"';
+      img += '\u0020width="';
+      img += size;
+      img += '"';
+      img += '\u0020height="';
+      img += size;
+      img += '"';
+      if (alt) {
+        img += '\u0020alt="';
+        img += escapeXml(alt);
+        img += '"';
+      }
+      img += '/>';
+
+      return img;
+    };
+
+    var escapeXml = function(s) {
+      var escaped = '';
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charAt(i);
+        switch(c) {
+        case '<': escaped += '&lt;'; break;
+        case '>': escaped += '&gt;'; break;
+        case '&': escaped += '&amp;'; break;
+        case '"': escaped += '&quot;'; break;
+        default : escaped += c; break;
+        }
+      }
+      return escaped;
+    };
+
+    var _createHalfASCII = function(margin) {
+      var cellSize = 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r1, r2, p;
+
+      var blocks = {
+        '██': '█',
+        '█ ': '▀',
+        ' █': '▄',
+        '  ': ' '
+      };
+
+      var blocksLastLineNoMargin = {
+        '██': '▀',
+        '█ ': '▀',
+        ' █': ' ',
+        '  ': ' '
+      };
+
+      var ascii = '';
+      for (y = 0; y < size; y += 2) {
+        r1 = Math.floor((y - min) / cellSize);
+        r2 = Math.floor((y + 1 - min) / cellSize);
+        for (x = 0; x < size; x += 1) {
+          p = '█';
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r1, Math.floor((x - min) / cellSize))) {
+            p = ' ';
+          }
+
+          if (min <= x && x < max && min <= y+1 && y+1 < max && _this.isDark(r2, Math.floor((x - min) / cellSize))) {
+            p += ' ';
+          }
+          else {
+            p += '█';
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          ascii += (margin < 1 && y+1 >= max) ? blocksLastLineNoMargin[p] : blocks[p];
+        }
+
+        ascii += '\n';
+      }
+
+      if (size % 2 && margin > 0) {
+        return ascii.substring(0, ascii.length - size - 1) + Array(size+1).join('▀');
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.createASCII = function(cellSize, margin) {
+      cellSize = cellSize || 1;
+
+      if (cellSize < 2) {
+        return _createHalfASCII(margin);
+      }
+
+      cellSize -= 1;
+      margin = (typeof margin == 'undefined')? cellSize * 2 : margin;
+
+      var size = _this.getModuleCount() * cellSize + margin * 2;
+      var min = margin;
+      var max = size - margin;
+
+      var y, x, r, p;
+
+      var white = Array(cellSize+1).join('██');
+      var black = Array(cellSize+1).join('  ');
+
+      var ascii = '';
+      var line = '';
+      for (y = 0; y < size; y += 1) {
+        r = Math.floor( (y - min) / cellSize);
+        line = '';
+        for (x = 0; x < size; x += 1) {
+          p = 1;
+
+          if (min <= x && x < max && min <= y && y < max && _this.isDark(r, Math.floor((x - min) / cellSize))) {
+            p = 0;
+          }
+
+          // Output 2 characters per pixel, to create full square. 1 character per pixels gives only half width of square.
+          line += p ? white : black;
+        }
+
+        for (r = 0; r < cellSize; r += 1) {
+          ascii += line + '\n';
+        }
+      }
+
+      return ascii.substring(0, ascii.length-1);
+    };
+
+    _this.renderTo2dContext = function(context, cellSize) {
+      cellSize = cellSize || 2;
+      var length = _this.getModuleCount();
+      for (var row = 0; row < length; row++) {
+        for (var col = 0; col < length; col++) {
+          context.fillStyle = _this.isDark(row, col) ? 'black' : 'white';
+          context.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+        }
+      }
+    }
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrcode.stringToBytes
+  //---------------------------------------------------------------------
+
+  qrcode.stringToBytesFuncs = {
+    'default' : function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        bytes.push(c & 0xff);
+      }
+      return bytes;
+    }
+  };
+
+  qrcode.stringToBytes = qrcode.stringToBytesFuncs['default'];
+
+  //---------------------------------------------------------------------
+  // qrcode.createStringToBytes
+  //---------------------------------------------------------------------
+
+  /**
+   * @param unicodeData base64 string of byte array.
+   * [16bit Unicode],[16bit Bytes], ...
+   * @param numChars
+   */
+  qrcode.createStringToBytes = function(unicodeData, numChars) {
+
+    // create conversion map.
+
+    var unicodeMap = function() {
+
+      var bin = base64DecodeInputStream(unicodeData);
+      var read = function() {
+        var b = bin.read();
+        if (b == -1) throw 'eof';
+        return b;
+      };
+
+      var count = 0;
+      var unicodeMap = {};
+      while (true) {
+        var b0 = bin.read();
+        if (b0 == -1) break;
+        var b1 = read();
+        var b2 = read();
+        var b3 = read();
+        var k = String.fromCharCode( (b0 << 8) | b1);
+        var v = (b2 << 8) | b3;
+        unicodeMap[k] = v;
+        count += 1;
+      }
+      if (count != numChars) {
+        throw count + ' != ' + numChars;
+      }
+
+      return unicodeMap;
+    }();
+
+    var unknownChar = '?'.charCodeAt(0);
+
+    return function(s) {
+      var bytes = [];
+      for (var i = 0; i < s.length; i += 1) {
+        var c = s.charCodeAt(i);
+        if (c < 128) {
+          bytes.push(c);
+        } else {
+          var b = unicodeMap[s.charAt(i)];
+          if (typeof b == 'number') {
+            if ( (b & 0xff) == b) {
+              // 1byte
+              bytes.push(b);
+            } else {
+              // 2bytes
+              bytes.push(b >>> 8);
+              bytes.push(b & 0xff);
+            }
+          } else {
+            bytes.push(unknownChar);
+          }
+        }
+      }
+      return bytes;
+    };
+  };
+
+  //---------------------------------------------------------------------
+  // QRMode
+  //---------------------------------------------------------------------
+
+  var QRMode = {
+    MODE_NUMBER :    1 << 0,
+    MODE_ALPHA_NUM : 1 << 1,
+    MODE_8BIT_BYTE : 1 << 2,
+    MODE_KANJI :     1 << 3
+  };
+
+  //---------------------------------------------------------------------
+  // QRErrorCorrectionLevel
+  //---------------------------------------------------------------------
+
+  var QRErrorCorrectionLevel = {
+    L : 1,
+    M : 0,
+    Q : 3,
+    H : 2
+  };
+
+  //---------------------------------------------------------------------
+  // QRMaskPattern
+  //---------------------------------------------------------------------
+
+  var QRMaskPattern = {
+    PATTERN000 : 0,
+    PATTERN001 : 1,
+    PATTERN010 : 2,
+    PATTERN011 : 3,
+    PATTERN100 : 4,
+    PATTERN101 : 5,
+    PATTERN110 : 6,
+    PATTERN111 : 7
+  };
+
+  //---------------------------------------------------------------------
+  // QRUtil
+  //---------------------------------------------------------------------
+
+  var QRUtil = function() {
+
+    var PATTERN_POSITION_TABLE = [
+      [],
+      [6, 18],
+      [6, 22],
+      [6, 26],
+      [6, 30],
+      [6, 34],
+      [6, 22, 38],
+      [6, 24, 42],
+      [6, 26, 46],
+      [6, 28, 50],
+      [6, 30, 54],
+      [6, 32, 58],
+      [6, 34, 62],
+      [6, 26, 46, 66],
+      [6, 26, 48, 70],
+      [6, 26, 50, 74],
+      [6, 30, 54, 78],
+      [6, 30, 56, 82],
+      [6, 30, 58, 86],
+      [6, 34, 62, 90],
+      [6, 28, 50, 72, 94],
+      [6, 26, 50, 74, 98],
+      [6, 30, 54, 78, 102],
+      [6, 28, 54, 80, 106],
+      [6, 32, 58, 84, 110],
+      [6, 30, 58, 86, 114],
+      [6, 34, 62, 90, 118],
+      [6, 26, 50, 74, 98, 122],
+      [6, 30, 54, 78, 102, 126],
+      [6, 26, 52, 78, 104, 130],
+      [6, 30, 56, 82, 108, 134],
+      [6, 34, 60, 86, 112, 138],
+      [6, 30, 58, 86, 114, 142],
+      [6, 34, 62, 90, 118, 146],
+      [6, 30, 54, 78, 102, 126, 150],
+      [6, 24, 50, 76, 102, 128, 154],
+      [6, 28, 54, 80, 106, 132, 158],
+      [6, 32, 58, 84, 110, 136, 162],
+      [6, 26, 54, 82, 110, 138, 166],
+      [6, 30, 58, 86, 114, 142, 170]
+    ];
+    var G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0);
+    var G18 = (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0);
+    var G15_MASK = (1 << 14) | (1 << 12) | (1 << 10) | (1 << 4) | (1 << 1);
+
+    var _this = {};
+
+    var getBCHDigit = function(data) {
+      var digit = 0;
+      while (data != 0) {
+        digit += 1;
+        data >>>= 1;
+      }
+      return digit;
+    };
+
+    _this.getBCHTypeInfo = function(data) {
+      var d = data << 10;
+      while (getBCHDigit(d) - getBCHDigit(G15) >= 0) {
+        d ^= (G15 << (getBCHDigit(d) - getBCHDigit(G15) ) );
+      }
+      return ( (data << 10) | d) ^ G15_MASK;
+    };
+
+    _this.getBCHTypeNumber = function(data) {
+      var d = data << 12;
+      while (getBCHDigit(d) - getBCHDigit(G18) >= 0) {
+        d ^= (G18 << (getBCHDigit(d) - getBCHDigit(G18) ) );
+      }
+      return (data << 12) | d;
+    };
+
+    _this.getPatternPosition = function(typeNumber) {
+      return PATTERN_POSITION_TABLE[typeNumber - 1];
+    };
+
+    _this.getMaskFunction = function(maskPattern) {
+
+      switch (maskPattern) {
+
+      case QRMaskPattern.PATTERN000 :
+        return function(i, j) { return (i + j) % 2 == 0; };
+      case QRMaskPattern.PATTERN001 :
+        return function(i, j) { return i % 2 == 0; };
+      case QRMaskPattern.PATTERN010 :
+        return function(i, j) { return j % 3 == 0; };
+      case QRMaskPattern.PATTERN011 :
+        return function(i, j) { return (i + j) % 3 == 0; };
+      case QRMaskPattern.PATTERN100 :
+        return function(i, j) { return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 == 0; };
+      case QRMaskPattern.PATTERN101 :
+        return function(i, j) { return (i * j) % 2 + (i * j) % 3 == 0; };
+      case QRMaskPattern.PATTERN110 :
+        return function(i, j) { return ( (i * j) % 2 + (i * j) % 3) % 2 == 0; };
+      case QRMaskPattern.PATTERN111 :
+        return function(i, j) { return ( (i * j) % 3 + (i + j) % 2) % 2 == 0; };
+
+      default :
+        throw 'bad maskPattern:' + maskPattern;
+      }
+    };
+
+    _this.getErrorCorrectPolynomial = function(errorCorrectLength) {
+      var a = qrPolynomial([1], 0);
+      for (var i = 0; i < errorCorrectLength; i += 1) {
+        a = a.multiply(qrPolynomial([1, QRMath.gexp(i)], 0) );
+      }
+      return a;
+    };
+
+    _this.getLengthInBits = function(mode, type) {
+
+      if (1 <= type && type < 10) {
+
+        // 1 - 9
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 10;
+        case QRMode.MODE_ALPHA_NUM : return 9;
+        case QRMode.MODE_8BIT_BYTE : return 8;
+        case QRMode.MODE_KANJI     : return 8;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 27) {
+
+        // 10 - 26
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 12;
+        case QRMode.MODE_ALPHA_NUM : return 11;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 10;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else if (type < 41) {
+
+        // 27 - 40
+
+        switch(mode) {
+        case QRMode.MODE_NUMBER    : return 14;
+        case QRMode.MODE_ALPHA_NUM : return 13;
+        case QRMode.MODE_8BIT_BYTE : return 16;
+        case QRMode.MODE_KANJI     : return 12;
+        default :
+          throw 'mode:' + mode;
+        }
+
+      } else {
+        throw 'type:' + type;
+      }
+    };
+
+    _this.getLostPoint = function(qrcode) {
+
+      var moduleCount = qrcode.getModuleCount();
+
+      var lostPoint = 0;
+
+      // LEVEL1
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount; col += 1) {
+
+          var sameCount = 0;
+          var dark = qrcode.isDark(row, col);
+
+          for (var r = -1; r <= 1; r += 1) {
+
+            if (row + r < 0 || moduleCount <= row + r) {
+              continue;
+            }
+
+            for (var c = -1; c <= 1; c += 1) {
+
+              if (col + c < 0 || moduleCount <= col + c) {
+                continue;
+              }
+
+              if (r == 0 && c == 0) {
+                continue;
+              }
+
+              if (dark == qrcode.isDark(row + r, col + c) ) {
+                sameCount += 1;
+              }
+            }
+          }
+
+          if (sameCount > 5) {
+            lostPoint += (3 + sameCount - 5);
+          }
+        }
+      };
+
+      // LEVEL2
+
+      for (var row = 0; row < moduleCount - 1; row += 1) {
+        for (var col = 0; col < moduleCount - 1; col += 1) {
+          var count = 0;
+          if (qrcode.isDark(row, col) ) count += 1;
+          if (qrcode.isDark(row + 1, col) ) count += 1;
+          if (qrcode.isDark(row, col + 1) ) count += 1;
+          if (qrcode.isDark(row + 1, col + 1) ) count += 1;
+          if (count == 0 || count == 4) {
+            lostPoint += 3;
+          }
+        }
+      }
+
+      // LEVEL3
+
+      for (var row = 0; row < moduleCount; row += 1) {
+        for (var col = 0; col < moduleCount - 6; col += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row, col + 1)
+              &&  qrcode.isDark(row, col + 2)
+              &&  qrcode.isDark(row, col + 3)
+              &&  qrcode.isDark(row, col + 4)
+              && !qrcode.isDark(row, col + 5)
+              &&  qrcode.isDark(row, col + 6) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount - 6; row += 1) {
+          if (qrcode.isDark(row, col)
+              && !qrcode.isDark(row + 1, col)
+              &&  qrcode.isDark(row + 2, col)
+              &&  qrcode.isDark(row + 3, col)
+              &&  qrcode.isDark(row + 4, col)
+              && !qrcode.isDark(row + 5, col)
+              &&  qrcode.isDark(row + 6, col) ) {
+            lostPoint += 40;
+          }
+        }
+      }
+
+      // LEVEL4
+
+      var darkCount = 0;
+
+      for (var col = 0; col < moduleCount; col += 1) {
+        for (var row = 0; row < moduleCount; row += 1) {
+          if (qrcode.isDark(row, col) ) {
+            darkCount += 1;
+          }
+        }
+      }
+
+      var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
+      lostPoint += ratio * 10;
+
+      return lostPoint;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // QRMath
+  //---------------------------------------------------------------------
+
+  var QRMath = function() {
+
+    var EXP_TABLE = new Array(256);
+    var LOG_TABLE = new Array(256);
+
+    // initialize tables
+    for (var i = 0; i < 8; i += 1) {
+      EXP_TABLE[i] = 1 << i;
+    }
+    for (var i = 8; i < 256; i += 1) {
+      EXP_TABLE[i] = EXP_TABLE[i - 4]
+        ^ EXP_TABLE[i - 5]
+        ^ EXP_TABLE[i - 6]
+        ^ EXP_TABLE[i - 8];
+    }
+    for (var i = 0; i < 255; i += 1) {
+      LOG_TABLE[EXP_TABLE[i] ] = i;
+    }
+
+    var _this = {};
+
+    _this.glog = function(n) {
+
+      if (n < 1) {
+        throw 'glog(' + n + ')';
+      }
+
+      return LOG_TABLE[n];
+    };
+
+    _this.gexp = function(n) {
+
+      while (n < 0) {
+        n += 255;
+      }
+
+      while (n >= 256) {
+        n -= 255;
+      }
+
+      return EXP_TABLE[n];
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrPolynomial
+  //---------------------------------------------------------------------
+
+  function qrPolynomial(num, shift) {
+
+    if (typeof num.length == 'undefined') {
+      throw num.length + '/' + shift;
+    }
+
+    var _num = function() {
+      var offset = 0;
+      while (offset < num.length && num[offset] == 0) {
+        offset += 1;
+      }
+      var _num = new Array(num.length - offset + shift);
+      for (var i = 0; i < num.length - offset; i += 1) {
+        _num[i] = num[i + offset];
+      }
+      return _num;
+    }();
+
+    var _this = {};
+
+    _this.getAt = function(index) {
+      return _num[index];
+    };
+
+    _this.getLength = function() {
+      return _num.length;
+    };
+
+    _this.multiply = function(e) {
+
+      var num = new Array(_this.getLength() + e.getLength() - 1);
+
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        for (var j = 0; j < e.getLength(); j += 1) {
+          num[i + j] ^= QRMath.gexp(QRMath.glog(_this.getAt(i) ) + QRMath.glog(e.getAt(j) ) );
+        }
+      }
+
+      return qrPolynomial(num, 0);
+    };
+
+    _this.mod = function(e) {
+
+      if (_this.getLength() - e.getLength() < 0) {
+        return _this;
+      }
+
+      var ratio = QRMath.glog(_this.getAt(0) ) - QRMath.glog(e.getAt(0) );
+
+      var num = new Array(_this.getLength() );
+      for (var i = 0; i < _this.getLength(); i += 1) {
+        num[i] = _this.getAt(i);
+      }
+
+      for (var i = 0; i < e.getLength(); i += 1) {
+        num[i] ^= QRMath.gexp(QRMath.glog(e.getAt(i) ) + ratio);
+      }
+
+      // recursive call
+      return qrPolynomial(num, 0).mod(e);
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // QRRSBlock
+  //---------------------------------------------------------------------
+
+  var QRRSBlock = function() {
+
+    var RS_BLOCK_TABLE = [
+
+      // L
+      // M
+      // Q
+      // H
+
+      // 1
+      [1, 26, 19],
+      [1, 26, 16],
+      [1, 26, 13],
+      [1, 26, 9],
+
+      // 2
+      [1, 44, 34],
+      [1, 44, 28],
+      [1, 44, 22],
+      [1, 44, 16],
+
+      // 3
+      [1, 70, 55],
+      [1, 70, 44],
+      [2, 35, 17],
+      [2, 35, 13],
+
+      // 4
+      [1, 100, 80],
+      [2, 50, 32],
+      [2, 50, 24],
+      [4, 25, 9],
+
+      // 5
+      [1, 134, 108],
+      [2, 67, 43],
+      [2, 33, 15, 2, 34, 16],
+      [2, 33, 11, 2, 34, 12],
+
+      // 6
+      [2, 86, 68],
+      [4, 43, 27],
+      [4, 43, 19],
+      [4, 43, 15],
+
+      // 7
+      [2, 98, 78],
+      [4, 49, 31],
+      [2, 32, 14, 4, 33, 15],
+      [4, 39, 13, 1, 40, 14],
+
+      // 8
+      [2, 121, 97],
+      [2, 60, 38, 2, 61, 39],
+      [4, 40, 18, 2, 41, 19],
+      [4, 40, 14, 2, 41, 15],
+
+      // 9
+      [2, 146, 116],
+      [3, 58, 36, 2, 59, 37],
+      [4, 36, 16, 4, 37, 17],
+      [4, 36, 12, 4, 37, 13],
+
+      // 10
+      [2, 86, 68, 2, 87, 69],
+      [4, 69, 43, 1, 70, 44],
+      [6, 43, 19, 2, 44, 20],
+      [6, 43, 15, 2, 44, 16],
+
+      // 11
+      [4, 101, 81],
+      [1, 80, 50, 4, 81, 51],
+      [4, 50, 22, 4, 51, 23],
+      [3, 36, 12, 8, 37, 13],
+
+      // 12
+      [2, 116, 92, 2, 117, 93],
+      [6, 58, 36, 2, 59, 37],
+      [4, 46, 20, 6, 47, 21],
+      [7, 42, 14, 4, 43, 15],
+
+      // 13
+      [4, 133, 107],
+      [8, 59, 37, 1, 60, 38],
+      [8, 44, 20, 4, 45, 21],
+      [12, 33, 11, 4, 34, 12],
+
+      // 14
+      [3, 145, 115, 1, 146, 116],
+      [4, 64, 40, 5, 65, 41],
+      [11, 36, 16, 5, 37, 17],
+      [11, 36, 12, 5, 37, 13],
+
+      // 15
+      [5, 109, 87, 1, 110, 88],
+      [5, 65, 41, 5, 66, 42],
+      [5, 54, 24, 7, 55, 25],
+      [11, 36, 12, 7, 37, 13],
+
+      // 16
+      [5, 122, 98, 1, 123, 99],
+      [7, 73, 45, 3, 74, 46],
+      [15, 43, 19, 2, 44, 20],
+      [3, 45, 15, 13, 46, 16],
+
+      // 17
+      [1, 135, 107, 5, 136, 108],
+      [10, 74, 46, 1, 75, 47],
+      [1, 50, 22, 15, 51, 23],
+      [2, 42, 14, 17, 43, 15],
+
+      // 18
+      [5, 150, 120, 1, 151, 121],
+      [9, 69, 43, 4, 70, 44],
+      [17, 50, 22, 1, 51, 23],
+      [2, 42, 14, 19, 43, 15],
+
+      // 19
+      [3, 141, 113, 4, 142, 114],
+      [3, 70, 44, 11, 71, 45],
+      [17, 47, 21, 4, 48, 22],
+      [9, 39, 13, 16, 40, 14],
+
+      // 20
+      [3, 135, 107, 5, 136, 108],
+      [3, 67, 41, 13, 68, 42],
+      [15, 54, 24, 5, 55, 25],
+      [15, 43, 15, 10, 44, 16],
+
+      // 21
+      [4, 144, 116, 4, 145, 117],
+      [17, 68, 42],
+      [17, 50, 22, 6, 51, 23],
+      [19, 46, 16, 6, 47, 17],
+
+      // 22
+      [2, 139, 111, 7, 140, 112],
+      [17, 74, 46],
+      [7, 54, 24, 16, 55, 25],
+      [34, 37, 13],
+
+      // 23
+      [4, 151, 121, 5, 152, 122],
+      [4, 75, 47, 14, 76, 48],
+      [11, 54, 24, 14, 55, 25],
+      [16, 45, 15, 14, 46, 16],
+
+      // 24
+      [6, 147, 117, 4, 148, 118],
+      [6, 73, 45, 14, 74, 46],
+      [11, 54, 24, 16, 55, 25],
+      [30, 46, 16, 2, 47, 17],
+
+      // 25
+      [8, 132, 106, 4, 133, 107],
+      [8, 75, 47, 13, 76, 48],
+      [7, 54, 24, 22, 55, 25],
+      [22, 45, 15, 13, 46, 16],
+
+      // 26
+      [10, 142, 114, 2, 143, 115],
+      [19, 74, 46, 4, 75, 47],
+      [28, 50, 22, 6, 51, 23],
+      [33, 46, 16, 4, 47, 17],
+
+      // 27
+      [8, 152, 122, 4, 153, 123],
+      [22, 73, 45, 3, 74, 46],
+      [8, 53, 23, 26, 54, 24],
+      [12, 45, 15, 28, 46, 16],
+
+      // 28
+      [3, 147, 117, 10, 148, 118],
+      [3, 73, 45, 23, 74, 46],
+      [4, 54, 24, 31, 55, 25],
+      [11, 45, 15, 31, 46, 16],
+
+      // 29
+      [7, 146, 116, 7, 147, 117],
+      [21, 73, 45, 7, 74, 46],
+      [1, 53, 23, 37, 54, 24],
+      [19, 45, 15, 26, 46, 16],
+
+      // 30
+      [5, 145, 115, 10, 146, 116],
+      [19, 75, 47, 10, 76, 48],
+      [15, 54, 24, 25, 55, 25],
+      [23, 45, 15, 25, 46, 16],
+
+      // 31
+      [13, 145, 115, 3, 146, 116],
+      [2, 74, 46, 29, 75, 47],
+      [42, 54, 24, 1, 55, 25],
+      [23, 45, 15, 28, 46, 16],
+
+      // 32
+      [17, 145, 115],
+      [10, 74, 46, 23, 75, 47],
+      [10, 54, 24, 35, 55, 25],
+      [19, 45, 15, 35, 46, 16],
+
+      // 33
+      [17, 145, 115, 1, 146, 116],
+      [14, 74, 46, 21, 75, 47],
+      [29, 54, 24, 19, 55, 25],
+      [11, 45, 15, 46, 46, 16],
+
+      // 34
+      [13, 145, 115, 6, 146, 116],
+      [14, 74, 46, 23, 75, 47],
+      [44, 54, 24, 7, 55, 25],
+      [59, 46, 16, 1, 47, 17],
+
+      // 35
+      [12, 151, 121, 7, 152, 122],
+      [12, 75, 47, 26, 76, 48],
+      [39, 54, 24, 14, 55, 25],
+      [22, 45, 15, 41, 46, 16],
+
+      // 36
+      [6, 151, 121, 14, 152, 122],
+      [6, 75, 47, 34, 76, 48],
+      [46, 54, 24, 10, 55, 25],
+      [2, 45, 15, 64, 46, 16],
+
+      // 37
+      [17, 152, 122, 4, 153, 123],
+      [29, 74, 46, 14, 75, 47],
+      [49, 54, 24, 10, 55, 25],
+      [24, 45, 15, 46, 46, 16],
+
+      // 38
+      [4, 152, 122, 18, 153, 123],
+      [13, 74, 46, 32, 75, 47],
+      [48, 54, 24, 14, 55, 25],
+      [42, 45, 15, 32, 46, 16],
+
+      // 39
+      [20, 147, 117, 4, 148, 118],
+      [40, 75, 47, 7, 76, 48],
+      [43, 54, 24, 22, 55, 25],
+      [10, 45, 15, 67, 46, 16],
+
+      // 40
+      [19, 148, 118, 6, 149, 119],
+      [18, 75, 47, 31, 76, 48],
+      [34, 54, 24, 34, 55, 25],
+      [20, 45, 15, 61, 46, 16]
+    ];
+
+    var qrRSBlock = function(totalCount, dataCount) {
+      var _this = {};
+      _this.totalCount = totalCount;
+      _this.dataCount = dataCount;
+      return _this;
+    };
+
+    var _this = {};
+
+    var getRsBlockTable = function(typeNumber, errorCorrectionLevel) {
+
+      switch(errorCorrectionLevel) {
+      case QRErrorCorrectionLevel.L :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
+      case QRErrorCorrectionLevel.M :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
+      case QRErrorCorrectionLevel.Q :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
+      case QRErrorCorrectionLevel.H :
+        return RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
+      default :
+        return undefined;
+      }
+    };
+
+    _this.getRSBlocks = function(typeNumber, errorCorrectionLevel) {
+
+      var rsBlock = getRsBlockTable(typeNumber, errorCorrectionLevel);
+
+      if (typeof rsBlock == 'undefined') {
+        throw 'bad rs block @ typeNumber:' + typeNumber +
+            '/errorCorrectionLevel:' + errorCorrectionLevel;
+      }
+
+      var length = rsBlock.length / 3;
+
+      var list = [];
+
+      for (var i = 0; i < length; i += 1) {
+
+        var count = rsBlock[i * 3 + 0];
+        var totalCount = rsBlock[i * 3 + 1];
+        var dataCount = rsBlock[i * 3 + 2];
+
+        for (var j = 0; j < count; j += 1) {
+          list.push(qrRSBlock(totalCount, dataCount) );
+        }
+      }
+
+      return list;
+    };
+
+    return _this;
+  }();
+
+  //---------------------------------------------------------------------
+  // qrBitBuffer
+  //---------------------------------------------------------------------
+
+  var qrBitBuffer = function() {
+
+    var _buffer = [];
+    var _length = 0;
+
+    var _this = {};
+
+    _this.getBuffer = function() {
+      return _buffer;
+    };
+
+    _this.getAt = function(index) {
+      var bufIndex = Math.floor(index / 8);
+      return ( (_buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
+    };
+
+    _this.put = function(num, length) {
+      for (var i = 0; i < length; i += 1) {
+        _this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
+      }
+    };
+
+    _this.getLengthInBits = function() {
+      return _length;
+    };
+
+    _this.putBit = function(bit) {
+
+      var bufIndex = Math.floor(_length / 8);
+      if (_buffer.length <= bufIndex) {
+        _buffer.push(0);
+      }
+
+      if (bit) {
+        _buffer[bufIndex] |= (0x80 >>> (_length % 8) );
+      }
+
+      _length += 1;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrNumber
+  //---------------------------------------------------------------------
+
+  var qrNumber = function(data) {
+
+    var _mode = QRMode.MODE_NUMBER;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _data;
+
+      var i = 0;
+
+      while (i + 2 < data.length) {
+        buffer.put(strToNum(data.substring(i, i + 3) ), 10);
+        i += 3;
+      }
+
+      if (i < data.length) {
+        if (data.length - i == 1) {
+          buffer.put(strToNum(data.substring(i, i + 1) ), 4);
+        } else if (data.length - i == 2) {
+          buffer.put(strToNum(data.substring(i, i + 2) ), 7);
+        }
+      }
+    };
+
+    var strToNum = function(s) {
+      var num = 0;
+      for (var i = 0; i < s.length; i += 1) {
+        num = num * 10 + chatToNum(s.charAt(i) );
+      }
+      return num;
+    };
+
+    var chatToNum = function(c) {
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      }
+      throw 'illegal char :' + c;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrAlphaNum
+  //---------------------------------------------------------------------
+
+  var qrAlphaNum = function(data) {
+
+    var _mode = QRMode.MODE_ALPHA_NUM;
+    var _data = data;
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _data.length;
+    };
+
+    _this.write = function(buffer) {
+
+      var s = _data;
+
+      var i = 0;
+
+      while (i + 1 < s.length) {
+        buffer.put(
+          getCode(s.charAt(i) ) * 45 +
+          getCode(s.charAt(i + 1) ), 11);
+        i += 2;
+      }
+
+      if (i < s.length) {
+        buffer.put(getCode(s.charAt(i) ), 6);
+      }
+    };
+
+    var getCode = function(c) {
+
+      if ('0' <= c && c <= '9') {
+        return c.charCodeAt(0) - '0'.charCodeAt(0);
+      } else if ('A' <= c && c <= 'Z') {
+        return c.charCodeAt(0) - 'A'.charCodeAt(0) + 10;
+      } else {
+        switch (c) {
+        case ' ' : return 36;
+        case '$' : return 37;
+        case '%' : return 38;
+        case '*' : return 39;
+        case '+' : return 40;
+        case '-' : return 41;
+        case '.' : return 42;
+        case '/' : return 43;
+        case ':' : return 44;
+        default :
+          throw 'illegal char :' + c;
+        }
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qr8BitByte
+  //---------------------------------------------------------------------
+
+  var qr8BitByte = function(data) {
+
+    var _mode = QRMode.MODE_8BIT_BYTE;
+    var _data = data;
+    var _bytes = qrcode.stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return _bytes.length;
+    };
+
+    _this.write = function(buffer) {
+      for (var i = 0; i < _bytes.length; i += 1) {
+        buffer.put(_bytes[i], 8);
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // qrKanji
+  //---------------------------------------------------------------------
+
+  var qrKanji = function(data) {
+
+    var _mode = QRMode.MODE_KANJI;
+    var _data = data;
+
+    var stringToBytes = qrcode.stringToBytesFuncs['SJIS'];
+    if (!stringToBytes) {
+      throw 'sjis not supported.';
+    }
+    !function(c, code) {
+      // self test for sjis support.
+      var test = stringToBytes(c);
+      if (test.length != 2 || ( (test[0] << 8) | test[1]) != code) {
+        throw 'sjis not supported.';
+      }
+    }('\u53cb', 0x9746);
+
+    var _bytes = stringToBytes(data);
+
+    var _this = {};
+
+    _this.getMode = function() {
+      return _mode;
+    };
+
+    _this.getLength = function(buffer) {
+      return ~~(_bytes.length / 2);
+    };
+
+    _this.write = function(buffer) {
+
+      var data = _bytes;
+
+      var i = 0;
+
+      while (i + 1 < data.length) {
+
+        var c = ( (0xff & data[i]) << 8) | (0xff & data[i + 1]);
+
+        if (0x8140 <= c && c <= 0x9FFC) {
+          c -= 0x8140;
+        } else if (0xE040 <= c && c <= 0xEBBF) {
+          c -= 0xC140;
+        } else {
+          throw 'illegal char at ' + (i + 1) + '/' + c;
+        }
+
+        c = ( (c >>> 8) & 0xff) * 0xC0 + (c & 0xff);
+
+        buffer.put(c, 13);
+
+        i += 2;
+      }
+
+      if (i < data.length) {
+        throw 'illegal char at ' + (i + 1);
+      }
+    };
+
+    return _this;
+  };
+
+  //=====================================================================
+  // GIF Support etc.
+  //
+
+  //---------------------------------------------------------------------
+  // byteArrayOutputStream
+  //---------------------------------------------------------------------
+
+  var byteArrayOutputStream = function() {
+
+    var _bytes = [];
+
+    var _this = {};
+
+    _this.writeByte = function(b) {
+      _bytes.push(b & 0xff);
+    };
+
+    _this.writeShort = function(i) {
+      _this.writeByte(i);
+      _this.writeByte(i >>> 8);
+    };
+
+    _this.writeBytes = function(b, off, len) {
+      off = off || 0;
+      len = len || b.length;
+      for (var i = 0; i < len; i += 1) {
+        _this.writeByte(b[i + off]);
+      }
+    };
+
+    _this.writeString = function(s) {
+      for (var i = 0; i < s.length; i += 1) {
+        _this.writeByte(s.charCodeAt(i) );
+      }
+    };
+
+    _this.toByteArray = function() {
+      return _bytes;
+    };
+
+    _this.toString = function() {
+      var s = '';
+      s += '[';
+      for (var i = 0; i < _bytes.length; i += 1) {
+        if (i > 0) {
+          s += ',';
+        }
+        s += _bytes[i];
+      }
+      s += ']';
+      return s;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64EncodeOutputStream
+  //---------------------------------------------------------------------
+
+  var base64EncodeOutputStream = function() {
+
+    var _buffer = 0;
+    var _buflen = 0;
+    var _length = 0;
+    var _base64 = '';
+
+    var _this = {};
+
+    var writeEncoded = function(b) {
+      _base64 += String.fromCharCode(encode(b & 0x3f) );
+    };
+
+    var encode = function(n) {
+      if (n < 0) {
+        // error.
+      } else if (n < 26) {
+        return 0x41 + n;
+      } else if (n < 52) {
+        return 0x61 + (n - 26);
+      } else if (n < 62) {
+        return 0x30 + (n - 52);
+      } else if (n == 62) {
+        return 0x2b;
+      } else if (n == 63) {
+        return 0x2f;
+      }
+      throw 'n:' + n;
+    };
+
+    _this.writeByte = function(n) {
+
+      _buffer = (_buffer << 8) | (n & 0xff);
+      _buflen += 8;
+      _length += 1;
+
+      while (_buflen >= 6) {
+        writeEncoded(_buffer >>> (_buflen - 6) );
+        _buflen -= 6;
+      }
+    };
+
+    _this.flush = function() {
+
+      if (_buflen > 0) {
+        writeEncoded(_buffer << (6 - _buflen) );
+        _buffer = 0;
+        _buflen = 0;
+      }
+
+      if (_length % 3 != 0) {
+        // padding
+        var padlen = 3 - _length % 3;
+        for (var i = 0; i < padlen; i += 1) {
+          _base64 += '=';
+        }
+      }
+    };
+
+    _this.toString = function() {
+      return _base64;
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // base64DecodeInputStream
+  //---------------------------------------------------------------------
+
+  var base64DecodeInputStream = function(str) {
+
+    var _str = str;
+    var _pos = 0;
+    var _buffer = 0;
+    var _buflen = 0;
+
+    var _this = {};
+
+    _this.read = function() {
+
+      while (_buflen < 8) {
+
+        if (_pos >= _str.length) {
+          if (_buflen == 0) {
+            return -1;
+          }
+          throw 'unexpected end of file./' + _buflen;
+        }
+
+        var c = _str.charAt(_pos);
+        _pos += 1;
+
+        if (c == '=') {
+          _buflen = 0;
+          return -1;
+        } else if (c.match(/^\s$/) ) {
+          // ignore if whitespace.
+          continue;
+        }
+
+        _buffer = (_buffer << 6) | decode(c.charCodeAt(0) );
+        _buflen += 6;
+      }
+
+      var n = (_buffer >>> (_buflen - 8) ) & 0xff;
+      _buflen -= 8;
+      return n;
+    };
+
+    var decode = function(c) {
+      if (0x41 <= c && c <= 0x5a) {
+        return c - 0x41;
+      } else if (0x61 <= c && c <= 0x7a) {
+        return c - 0x61 + 26;
+      } else if (0x30 <= c && c <= 0x39) {
+        return c - 0x30 + 52;
+      } else if (c == 0x2b) {
+        return 62;
+      } else if (c == 0x2f) {
+        return 63;
+      } else {
+        throw 'c:' + c;
+      }
+    };
+
+    return _this;
+  };
+
+  //---------------------------------------------------------------------
+  // gifImage (B/W)
+  //---------------------------------------------------------------------
+
+  var gifImage = function(width, height) {
+
+    var _width = width;
+    var _height = height;
+    var _data = new Array(width * height);
+
+    var _this = {};
+
+    _this.setPixel = function(x, y, pixel) {
+      _data[y * _width + x] = pixel;
+    };
+
+    _this.write = function(out) {
+
+      //---------------------------------
+      // GIF Signature
+
+      out.writeString('GIF87a');
+
+      //---------------------------------
+      // Screen Descriptor
+
+      out.writeShort(_width);
+      out.writeShort(_height);
+
+      out.writeByte(0x80); // 2bit
+      out.writeByte(0);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Global Color Map
+
+      // black
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+      out.writeByte(0x00);
+
+      // white
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+      out.writeByte(0xff);
+
+      //---------------------------------
+      // Image Descriptor
+
+      out.writeString(',');
+      out.writeShort(0);
+      out.writeShort(0);
+      out.writeShort(_width);
+      out.writeShort(_height);
+      out.writeByte(0);
+
+      //---------------------------------
+      // Local Color Map
+
+      //---------------------------------
+      // Raster Data
+
+      var lzwMinCodeSize = 2;
+      var raster = getLZWRaster(lzwMinCodeSize);
+
+      out.writeByte(lzwMinCodeSize);
+
+      var offset = 0;
+
+      while (raster.length - offset > 255) {
+        out.writeByte(255);
+        out.writeBytes(raster, offset, 255);
+        offset += 255;
+      }
+
+      out.writeByte(raster.length - offset);
+      out.writeBytes(raster, offset, raster.length - offset);
+      out.writeByte(0x00);
+
+      //---------------------------------
+      // GIF Terminator
+      out.writeString(';');
+    };
+
+    var bitOutputStream = function(out) {
+
+      var _out = out;
+      var _bitLength = 0;
+      var _bitBuffer = 0;
+
+      var _this = {};
+
+      _this.write = function(data, length) {
+
+        if ( (data >>> length) != 0) {
+          throw 'length over';
+        }
+
+        while (_bitLength + length >= 8) {
+          _out.writeByte(0xff & ( (data << _bitLength) | _bitBuffer) );
+          length -= (8 - _bitLength);
+          data >>>= (8 - _bitLength);
+          _bitBuffer = 0;
+          _bitLength = 0;
+        }
+
+        _bitBuffer = (data << _bitLength) | _bitBuffer;
+        _bitLength = _bitLength + length;
+      };
+
+      _this.flush = function() {
+        if (_bitLength > 0) {
+          _out.writeByte(_bitBuffer);
+        }
+      };
+
+      return _this;
+    };
+
+    var getLZWRaster = function(lzwMinCodeSize) {
+
+      var clearCode = 1 << lzwMinCodeSize;
+      var endCode = (1 << lzwMinCodeSize) + 1;
+      var bitLength = lzwMinCodeSize + 1;
+
+      // Setup LZWTable
+      var table = lzwTable();
+
+      for (var i = 0; i < clearCode; i += 1) {
+        table.add(String.fromCharCode(i) );
+      }
+      table.add(String.fromCharCode(clearCode) );
+      table.add(String.fromCharCode(endCode) );
+
+      var byteOut = byteArrayOutputStream();
+      var bitOut = bitOutputStream(byteOut);
+
+      // clear code
+      bitOut.write(clearCode, bitLength);
+
+      var dataIndex = 0;
+
+      var s = String.fromCharCode(_data[dataIndex]);
+      dataIndex += 1;
+
+      while (dataIndex < _data.length) {
+
+        var c = String.fromCharCode(_data[dataIndex]);
+        dataIndex += 1;
+
+        if (table.contains(s + c) ) {
+
+          s = s + c;
+
+        } else {
+
+          bitOut.write(table.indexOf(s), bitLength);
+
+          if (table.size() < 0xfff) {
+
+            if (table.size() == (1 << bitLength) ) {
+              bitLength += 1;
+            }
+
+            table.add(s + c);
+          }
+
+          s = c;
+        }
+      }
+
+      bitOut.write(table.indexOf(s), bitLength);
+
+      // end code
+      bitOut.write(endCode, bitLength);
+
+      bitOut.flush();
+
+      return byteOut.toByteArray();
+    };
+
+    var lzwTable = function() {
+
+      var _map = {};
+      var _size = 0;
+
+      var _this = {};
+
+      _this.add = function(key) {
+        if (_this.contains(key) ) {
+          throw 'dup key:' + key;
+        }
+        _map[key] = _size;
+        _size += 1;
+      };
+
+      _this.size = function() {
+        return _size;
+      };
+
+      _this.indexOf = function(key) {
+        return _map[key];
+      };
+
+      _this.contains = function(key) {
+        return typeof _map[key] != 'undefined';
+      };
+
+      return _this;
+    };
+
+    return _this;
+  };
+
+  var createDataURL = function(width, height, getPixel) {
+    var gif = gifImage(width, height);
+    for (var y = 0; y < height; y += 1) {
+      for (var x = 0; x < width; x += 1) {
+        gif.setPixel(x, y, getPixel(x, y) );
+      }
+    }
+
+    var b = byteArrayOutputStream();
+    gif.write(b);
+
+    var base64 = base64EncodeOutputStream();
+    var bytes = b.toByteArray();
+    for (var i = 0; i < bytes.length; i += 1) {
+      base64.writeByte(bytes[i]);
+    }
+    base64.flush();
+
+    return 'data:image/gif;base64,' + base64;
+  };
+
+  //---------------------------------------------------------------------
+  // returns qrcode function.
+
+  return qrcode;
+}();
+
+// multibyte support
+!function() {
+
+  qrcode.stringToBytesFuncs['UTF-8'] = function(s) {
+    // http://stackoverflow.com/questions/18729405/how-to-convert-utf8-string-to-byte-array
+    function toUTF8Array(str) {
+      var utf8 = [];
+      for (var i=0; i < str.length; i++) {
+        var charcode = str.charCodeAt(i);
+        if (charcode < 0x80) utf8.push(charcode);
+        else if (charcode < 0x800) {
+          utf8.push(0xc0 | (charcode >> 6),
+              0x80 | (charcode & 0x3f));
+        }
+        else if (charcode < 0xd800 || charcode >= 0xe000) {
+          utf8.push(0xe0 | (charcode >> 12),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+        // surrogate pair
+        else {
+          i++;
+          // UTF-16 encodes 0x10000-0x10FFFF by
+          // subtracting 0x10000 and splitting the
+          // 20 bits of 0x0-0xFFFFF into two halves
+          charcode = 0x10000 + (((charcode & 0x3ff)<<10)
+            | (str.charCodeAt(i) & 0x3ff));
+          utf8.push(0xf0 | (charcode >>18),
+              0x80 | ((charcode>>12) & 0x3f),
+              0x80 | ((charcode>>6) & 0x3f),
+              0x80 | (charcode & 0x3f));
+        }
+      }
+      return utf8;
+    }
+    return toUTF8Array(s);
+  };
+
+}();
+
+(function (factory) {
+  if (typeof define === 'function' && define.amd) {
+      define([], factory);
+  } else if (typeof exports === 'object') {
+      module.exports = factory();
+  }
+}(function () {
+    return qrcode;
+}));
+</script>
+<script>'use strict';
+/* ================= CONFIG ================= */
+const CFG = Object.assign({
+  url: 'https://nvnuqtkkgqbjliwxmzif.supabase.co',
+  key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im52bnVxdGtrZ3Fiamxpd3htemlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ4OTExODQsImV4cCI6MjExMDQ2NzE4NH0.vIJCd9YtUfUXLtf8B3GHBsHblVNXBnZp79CSwpcplD0'
+}, window.__MK_CFG || {});
+const WS_URL = CFG.ws || CFG.url.replace(/^http/, 'ws') + '/realtime/v1/websocket';
+const REST_URL = CFG.rest || CFG.url + '/realtime/v1/api/broadcast';
+const READY_MS = 4000, GRACE_MS = 1500, BEAT_MS = 3000;
+
+/* ================= UTIL ================= */
+const $ = s => document.querySelector(s);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const rid = n => { const a = new Uint8Array(n); crypto.getRandomValues(a); return Array.from(a, b => 'abcdefghijklmnopqrstuvwxyz0123456789'[b % 36]).join(''); };
+const shuffle = a => { for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const LS = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { } }
+};
+let toastT;
+function toast(m) { const e = $('#toast'); e.textContent = m; e.classList.add('on'); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove('on'), 2600); }
+function download(blob, name) { const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500); }
+const LETTERS = ['A', 'B', 'C', 'D'];
+const SHAPES = [
+  '<svg viewBox="0 0 24 24"><path d="M12 2l8.66 5v10L12 22l-8.66-5V7z"/></svg>',
+  '<svg viewBox="0 0 24 24"><path fill-rule="evenodd" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 6a4 4 0 110 8 4 4 0 010-8z"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>',
+  '<svg viewBox="0 0 24 24"><path d="M9 3h6v6h6v6h-6v6H9v-6H3V9h6z"/></svg>'
+];
+
+/* ================= I18N ================= */
+const I18N = {
+  vi: {
+    host: 'Tổ chức', join: 'Tham gia', joinTitle: 'Tham gia trò chơi', pin: 'Mã PIN', enter: 'Vào phòng', nick: 'Tên hiển thị', go: 'Sẵn sàng!',
+    hostLink: 'Tôi là người tổ chức', connecting: 'Đang kết nối…', notFound: 'Không tìm thấy phòng với mã PIN này. Kiểm tra lại mã hoặc hỏi người tổ chức.',
+    retry: 'Thử lại', locked: 'Phòng đã khóa, không nhận thêm người chơi.', kicked: 'Bạn đã bị mời ra khỏi phòng.', badName: 'Vui lòng nhập tên (tối đa 16 ký tự).',
+    youIn: 'Bạn đã vào phòng!', seeName: 'Tên của bạn đang hiện trên màn hình chính. Chờ người tổ chức bắt đầu.', team: 'Đội', pickTeam: 'Chọn đội',
+    getReady: 'Chuẩn bị', question: 'Câu', of: '/', sent: 'Đã ghi nhận câu trả lời', sending: 'Đang gửi…', waitOthers: 'Chờ những người khác…',
+    timeUp: 'Hết giờ!', correct: 'Chính xác!', wrong: 'Chưa đúng', noAns: 'Chưa trả lời', rank: 'Hạng', score: 'Điểm', streak: 'Chuỗi đúng',
+    final: 'Kết quả chung cuộc', thanks: 'Cảm ơn bạn đã tham gia!', submit: 'Gửi câu trả lời', multi: 'Chọn tất cả đáp án đúng', leave: 'Thoát',
+    lost: 'Mất kết nối — đang kết nối lại…', hostGone: 'Chưa nhận được tín hiệu từ người tổ chức…',
+    tfT: 'Đúng', tfF: 'Sai',
+    library: 'Bộ câu hỏi', newQuiz: 'Tạo bộ mới', importX: 'Nhập từ Excel', template: 'Tải file mẫu', reports: 'Báo cáo', play: 'Chơi', edit: 'Sửa', exportX: 'Xuất Excel',
+    dup: 'Nhân bản', del: 'Xóa', questions: 'câu hỏi', invalid: 'chưa hợp lệ', empty: 'Chưa có bộ câu hỏi nào.', confirmDel: 'Xóa bộ câu hỏi này?', yes: 'Đồng ý', no: 'Hủy',
+    untitled: 'Bộ câu hỏi mới', title: 'Tiêu đề', back: 'Quay lại', addQuiz: 'Thêm câu trắc nghiệm', addTF: 'Thêm câu Đúng/Sai', qText: 'Nội dung câu hỏi',
+    typeQuiz: 'Trắc nghiệm', typeTF: 'Đúng/Sai', time: 'Thời gian', pts: 'Điểm', std: 'Chuẩn (1000)', dbl: 'Gấp đôi (2000)', none: 'Không tính điểm', image: 'Ảnh',
+    rmImage: 'Bỏ ảnh', optPh: 'Đáp án', markOk: 'Đánh dấu đáp án đúng', saved: 'Đã lưu', qInvalid: 'Cần nội dung, ít nhất 2 đáp án và 1 đáp án đúng',
+    noValid: 'Bộ này chưa có câu hỏi hợp lệ.', storeFull: 'Bộ nhớ trình duyệt đầy — hãy bỏ bớt ảnh hoặc xóa bộ cũ.',
+    setup: 'Thiết lập phòng chơi', mode: 'Chế độ', classic: 'Cá nhân', teamMode: 'Theo đội', teamCount: 'Số đội', teamNames: 'Tên các đội', assign: 'Chia đội',
+    choose: 'Người chơi tự chọn', auto: 'Tự động chia đều', shuffleQ: 'Xáo thứ tự câu hỏi', shuffleA: 'Xáo thứ tự đáp án', create: 'Tạo phòng',
+    joinAt: 'Vào địa chỉ', orScan: 'hoặc quét mã QR', players: 'Người chơi', waiting: 'Đang chờ người chơi…', kickHint: 'Bấm vào tên để mời ra',
+    lock: 'Khóa phòng', unlock: 'Mở khóa', start: 'Bắt đầu', cancel: 'Hủy phòng', confirmCancel: 'Kết thúc phòng chơi này? Mọi người chơi sẽ bị ngắt.',
+    answered: 'Đã trả lời', skip: 'Bỏ qua', next: 'Tiếp theo', endGame: 'Kết thúc', leaderboard: 'Bảng xếp hạng', teamBoard: 'Xếp hạng đội', showRes: 'Xem kết quả',
+    podium: 'Vinh danh', dlReport: 'Tải báo cáo Excel', toLibrary: 'Về thư viện', members: 'Thành viên', avg: 'Điểm TB',
+    fileWarn: 'Trang đang mở từ file trên máy (file://). Người chơi không thể quét QR. Hãy đưa file lên một địa chỉ web (https) rồi mở lại từ đó.',
+    resume: 'Có một phòng chơi đang dang dở', resumeBtn: 'Tiếp tục', discard: 'Bỏ', noReports: 'Chưa có báo cáo.', date: 'Ngày',
+    imported: 'Đã nhập', importFail: 'Không đọc được file. Hãy dùng file mẫu (.xlsx).', offline: 'Mất kết nối máy chủ realtime — đang kết nối lại…',
+    sound: 'Âm thanh', full: 'Toàn màn hình', confirmEnd: 'Kết thúc trò chơi ngay và xem kết quả?', all: 'Tất cả',
+    rSummary: 'Tổng hợp', rDetail: 'Chi tiết', rQuestions: 'Câu hỏi', rTeams: 'Đội',
+    cNick: 'Tên', cTeam: 'Đội', cScore: 'Điểm', cCorrect: 'Số câu đúng', cTotalQ: 'Tổng số câu', cPct: '% đúng', cAvgT: 'TG trả lời TB (s)', cQ: 'Câu', cQuestion: 'Câu hỏi',
+    cAnswer: 'Đã chọn', cIsOk: 'Kết quả', cTime: 'Thời gian (s)', cPts: 'Điểm', cRight: 'Đáp án đúng', cAnswered: 'Số người trả lời', cRank: 'Hạng', cOk: 'Đúng', cNo: 'Sai'
+  },
+  en: {
+    host: 'Host', join: 'Join', joinTitle: 'Join a game', pin: 'Game PIN', enter: 'Enter', nick: 'Nickname', go: 'Ready!',
+    hostLink: 'I am the host', connecting: 'Connecting…', notFound: 'No game found for this PIN. Check the PIN or ask the host.',
+    retry: 'Try again', locked: 'The game is locked. No new players.', kicked: 'You were removed from the game.', badName: 'Please enter a nickname (max 16 characters).',
+    youIn: "You're in!", seeName: 'Your name is on the main screen. Waiting for the host to start.', team: 'Team', pickTeam: 'Pick a team',
+    getReady: 'Get ready', question: 'Question', of: '/', sent: 'Answer recorded', sending: 'Sending…', waitOthers: 'Waiting for the others…',
+    timeUp: "Time's up!", correct: 'Correct!', wrong: 'Incorrect', noAns: 'No answer', rank: 'Rank', score: 'Score', streak: 'Answer streak',
+    final: 'Final results', thanks: 'Thanks for playing!', submit: 'Submit answer', multi: 'Select all correct answers', leave: 'Leave',
+    lost: 'Connection lost — reconnecting…', hostGone: 'No signal from the host yet…',
+    tfT: 'True', tfF: 'False',
+    library: 'Quiz library', newQuiz: 'New quiz', importX: 'Import Excel', template: 'Download template', reports: 'Reports', play: 'Play', edit: 'Edit', exportX: 'Export Excel',
+    dup: 'Duplicate', del: 'Delete', questions: 'questions', invalid: 'invalid', empty: 'No quizzes yet.', confirmDel: 'Delete this quiz?', yes: 'OK', no: 'Cancel',
+    untitled: 'New quiz', title: 'Title', back: 'Back', addQuiz: 'Add quiz question', addTF: 'Add True/False', qText: 'Question text',
+    typeQuiz: 'Quiz', typeTF: 'True/False', time: 'Time', pts: 'Points', std: 'Standard (1000)', dbl: 'Double (2000)', none: 'No points', image: 'Image',
+    rmImage: 'Remove image', optPh: 'Answer', markOk: 'Mark as correct', saved: 'Saved', qInvalid: 'Needs text, at least 2 answers and 1 correct answer',
+    noValid: 'This quiz has no valid questions.', storeFull: 'Browser storage is full — remove images or delete old quizzes.',
+    setup: 'Game setup', mode: 'Mode', classic: 'Classic', teamMode: 'Team', teamCount: 'Teams', teamNames: 'Team names', assign: 'Assignment',
+    choose: 'Players choose', auto: 'Automatic, balanced', shuffleQ: 'Shuffle questions', shuffleA: 'Shuffle answers', create: 'Create room',
+    joinAt: 'Join at', orScan: 'or scan the QR code', players: 'Players', waiting: 'Waiting for players…', kickHint: 'Click a name to remove',
+    lock: 'Lock', unlock: 'Unlock', start: 'Start', cancel: 'Cancel game', confirmCancel: 'End this game? All players will be disconnected.',
+    answered: 'Answers', skip: 'Skip', next: 'Next', endGame: 'End', leaderboard: 'Leaderboard', teamBoard: 'Team ranking', showRes: 'Show results',
+    podium: 'Podium', dlReport: 'Download Excel report', toLibrary: 'Back to library', members: 'Members', avg: 'Avg score',
+    fileWarn: 'This page is opened from a local file (file://). Players cannot scan the QR. Host the file on a web address (https) and open it from there.',
+    resume: 'A game is still in progress', resumeBtn: 'Resume', discard: 'Discard', noReports: 'No reports yet.', date: 'Date',
+    imported: 'Imported', importFail: 'Could not read the file. Please use the template (.xlsx).', offline: 'Realtime server connection lost — reconnecting…',
+    sound: 'Sound', full: 'Fullscreen', confirmEnd: 'End the game now and show results?', all: 'All',
+    rSummary: 'Summary', rDetail: 'Detail', rQuestions: 'Questions', rTeams: 'Teams',
+    cNick: 'Nickname', cTeam: 'Team', cScore: 'Score', cCorrect: 'Correct', cTotalQ: 'Questions', cPct: '% correct', cAvgT: 'Avg answer time (s)', cQ: 'Q#', cQuestion: 'Question',
+    cAnswer: 'Answer', cIsOk: 'Result', cTime: 'Time (s)', cPts: 'Points', cRight: 'Correct answer', cAnswered: 'Answered', cRank: 'Rank', cOk: 'Correct', cNo: 'Incorrect'
+  }
+};
+let LANG = LS.get('mkq.lang', 'vi'); if (!I18N[LANG]) LANG = 'vi';
+const t = k => I18N[LANG][k] || I18N.vi[k] || k;
+function setLang(l) { LANG = l; LS.set('mkq.lang', l); document.documentElement.lang = l; render(); }
+const langBtn = () => `<div class="seg" title="Language"><button data-lang="vi" class="${LANG === 'vi' ? 'on' : ''}">VI</button><button data-lang="en" class="${LANG === 'en' ? 'on' : ''}">EN</button></div>`;
+const brand = href => `<a class="brand" href="${href || '#/'}"><b>MET</b>KRAFT<span>QUIZ</span></a>`;
+
+/* ================= REALTIME (Supabase Realtime / Phoenix protocol) ================= */
+class RT {
+  constructor(topics, onMsg, onStatus) {
+    this.topics = topics; this.onMsg = onMsg; this.onStatus = onStatus || (() => { });
+    this.ref = 0; this.closed = false; this.joined = new Set(); this.retry = 0;
+    this._vis = () => { if (document.visibilityState === 'visible' && !this.closed && (!this.ws || this.ws.readyState > 1)) { clearTimeout(this.rt); this.connect(); } };
+    document.addEventListener('visibilitychange', this._vis);
+    this.connect();
+  }
+  get ready() { return !!this.ws && this.ws.readyState === 1 && this.joined.size === this.topics.length; }
+  connect() {
+    if (this.closed) return;
+    if (this.ws && this.ws.readyState <= 1) return;
+    let ws;
+    try { ws = this.ws = new WebSocket(WS_URL + '?apikey=' + encodeURIComponent(CFG.key) + '&vsn=1.0.0'); }
+    catch (e) { this.rt = setTimeout(() => this.connect(), 3000); return; }
+    this.joined.clear();
+    ws.onopen = () => {
+      this.retry = 0; this.hbPending = 0;
+      this.topics.forEach(tp => this.join(tp));
+      clearInterval(this.hb);
+      this.hb = setInterval(() => {
+        if (ws.readyState !== 1) return;
+        if (this.hbPending >= 2) { try { ws.close(); } catch (e) { } return; }
+        this.hbPending++;
+        ws.send(JSON.stringify({ topic: 'phoenix', event: 'heartbeat', payload: {}, ref: String(++this.ref) }));
+      }, 20000);
+    };
+    ws.onmessage = e => {
+      let m; try { m = JSON.parse(e.data); } catch (_) { return; }
+      if (m.topic === 'phoenix') { this.hbPending = 0; return; }
+      const tp = String(m.topic || '').replace(/^realtime:/, '');
+      if (m.event === 'phx_reply') {
+        if (typeof m.ref === 'string' && m.ref[0] === 'j') {
+          if (m.payload && m.payload.status === 'ok') { this.joined.add(tp); if (this.ready) this.onStatus(true); }
+          else setTimeout(() => { if (ws === this.ws && ws.readyState === 1) this.join(tp); }, 2000);
+        }
+      } else if (m.event === 'phx_error' || m.event === 'phx_close') {
+        if (this.joined.delete(tp)) this.onStatus(false);
+        setTimeout(() => { if (ws === this.ws && ws.readyState === 1) this.join(tp); }, 1000);
+      } else if (m.event === 'broadcast' && m.payload) {
+        try { this.onMsg(tp, m.payload.event, m.payload.payload); } catch (err) { console.error(err); }
+      }
+    };
+    ws.onerror = () => { };
+    ws.onclose = () => {
+      if (ws !== this.ws) return;
+      clearInterval(this.hb); this.joined.clear(); this.onStatus(false);
+      if (!this.closed) this.rt = setTimeout(() => this.connect(), Math.min(5000, 500 * Math.pow(2, this.retry++)));
+    };
+  }
+  join(tp) {
+    this.ws.send(JSON.stringify({ topic: 'realtime:' + tp, event: 'phx_join', payload: { config: { broadcast: { self: false, ack: false }, presence: { key: '' }, private: false } }, ref: 'j' + (++this.ref) }));
+  }
+  send(tp, event, payload) {
+    if (!this.ws || this.ws.readyState !== 1 || !this.joined.has(tp)) return false;
+    this.ws.send(JSON.stringify({ topic: 'realtime:' + tp, event: 'broadcast', payload: { type: 'broadcast', event, payload }, ref: String(++this.ref) }));
+    return true;
+  }
+  close() {
+    this.closed = true; clearTimeout(this.rt); clearInterval(this.hb);
+    document.removeEventListener('visibilitychange', this._vis);
+    if (this.ws) { try { this.ws.close(); } catch (e) { } }
+  }
+}
+/* Player -> host goes over HTTPS so answers are not fanned out to every other player. */
+function restSend(tp, event, payload) {
+  return fetch(REST_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json', apikey: CFG.key, Authorization: 'Bearer ' + CFG.key },
+    body: JSON.stringify({ messages: [{ topic: tp, event, payload }] })
+  }).then(r => r.ok).catch(() => false);
+}
+const topicUp = pin => 'mkq-' + pin + '-up', topicDn = pin => 'mkq-' + pin + '-dn';
+
+/* ================= XLSX (minimal reader/writer, no external library) ================= */
+const XL = (() => {
+  const enc = new TextEncoder(), dec = new TextDecoder();
+  const crcT = (() => { const tb = new Uint32Array(256); for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xEDB88320 ^ (c >>> 1) : c >>> 1; tb[n] = c >>> 0; } return tb; })();
+  const crc32 = u8 => { let c = 0xFFFFFFFF; for (let i = 0; i < u8.length; i++) c = crcT[(c ^ u8[i]) & 255] ^ (c >>> 8); return (c ^ 0xFFFFFFFF) >>> 0; };
+  const x = s => String(s).replace(/[^\x09\x0A\x0D\x20-퟿-�]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const col = n => { let s = ''; n++; while (n > 0) { const m = (n - 1) % 26; s = String.fromCharCode(65 + m) + s; n = (n - m - 1) / 26; } return s; };
+  function zip(files) {
+    const parts = [], cd = []; let off = 0;
+    for (const f of files) {
+      const name = enc.encode(f.name), data = enc.encode(f.text), crc = crc32(data);
+      const lh = new DataView(new ArrayBuffer(30));
+      lh.setUint32(0, 0x04034b50, true); lh.setUint16(4, 20, true); lh.setUint16(6, 0x0800, true); lh.setUint16(8, 0, true);
+      lh.setUint16(10, 0, true); lh.setUint16(12, 0x21, true); lh.setUint32(14, crc, true); lh.setUint32(18, data.length, true); lh.setUint32(22, data.length, true);
+      lh.setUint16(26, name.length, true); lh.setUint16(28, 0, true);
+      parts.push(new Uint8Array(lh.buffer), name, data);
+      const ch = new DataView(new ArrayBuffer(46));
+      ch.setUint32(0, 0x02014b50, true); ch.setUint16(4, 20, true); ch.setUint16(6, 20, true); ch.setUint16(8, 0x0800, true); ch.setUint16(10, 0, true);
+      ch.setUint16(12, 0, true); ch.setUint16(14, 0x21, true); ch.setUint32(16, crc, true); ch.setUint32(20, data.length, true); ch.setUint32(24, data.length, true);
+      ch.setUint16(28, name.length, true); ch.setUint32(42, off, true);
+      cd.push(new Uint8Array(ch.buffer), name);
+      off += 30 + name.length + data.length;
+    }
+    const cdSize = cd.reduce((a, b) => a + b.length, 0);
+    const eo = new DataView(new ArrayBuffer(22));
+    eo.setUint32(0, 0x06054b50, true); eo.setUint16(8, files.length, true); eo.setUint16(10, files.length, true); eo.setUint32(12, cdSize, true); eo.setUint32(16, off, true);
+    return new Blob([...parts, ...cd, new Uint8Array(eo.buffer)], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  }
+  function write(sheets) {
+    const H = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>\n';
+    const files = [];
+    files.push({ name: '[Content_Types].xml', text: H + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types"><Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/><Default Extension="xml" ContentType="application/xml"/><Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/><Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>' + sheets.map((_, i) => `<Override PartName="/xl/worksheets/sheet${i + 1}.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/>`).join('') + '</Types>' });
+    files.push({ name: '_rels/.rels', text: H + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships"><Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>' });
+    files.push({ name: 'xl/workbook.xml', text: H + '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships"><sheets>' + sheets.map((s, i) => `<sheet name="${x(String(s.name).replace(/[\[\]:*?\/\\]/g, ' ').slice(0, 31))}" sheetId="${i + 1}" r:id="rId${i + 1}"/>`).join('') + '</sheets></workbook>' });
+    files.push({ name: 'xl/_rels/workbook.xml.rels', text: H + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' + sheets.map((_, i) => `<Relationship Id="rId${i + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet${i + 1}.xml"/>`).join('') + `<Relationship Id="rId${sheets.length + 1}" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>` });
+    files.push({ name: 'xl/styles.xml', text: H + '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><fonts count="2"><font><sz val="11"/><name val="Calibri"/></font><font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font></fonts><fills count="3"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill><fill><patternFill patternType="solid"><fgColor rgb="FF221F20"/><bgColor indexed="64"/></patternFill></fill></fills><borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders><cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs><cellXfs count="2"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/><xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs><cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>' });
+    sheets.forEach((s, i) => {
+      const hr = s.header == null ? 0 : s.header;
+      let xml = H + '<worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">';
+      if (s.widths) xml += '<cols>' + s.widths.map((w, c) => `<col min="${c + 1}" max="${c + 1}" width="${w}" customWidth="1"/>`).join('') + '</cols>';
+      xml += '<sheetData>';
+      s.rows.forEach((row, r) => {
+        xml += `<row r="${r + 1}">`;
+        row.forEach((v, c) => {
+          if (v == null || v === '') return;
+          const ref = col(c) + (r + 1), st = r === hr ? ' s="1"' : '';
+          if (typeof v === 'number' && isFinite(v)) xml += `<c r="${ref}"${st}><v>${v}</v></c>`;
+          else xml += `<c r="${ref}"${st} t="inlineStr"><is><t xml:space="preserve">${x(v)}</t></is></c>`;
+        });
+        xml += '</row>';
+      });
+      xml += '</sheetData></worksheet>';
+      files.push({ name: `xl/worksheets/sheet${i + 1}.xml`, text: xml });
+    });
+    return zip(files);
+  }
+  async function unzip(buf) {
+    const u8 = new Uint8Array(buf), dv = new DataView(buf);
+    let e = -1;
+    for (let i = u8.length - 22; i >= Math.max(0, u8.length - 66000); i--) if (dv.getUint32(i, true) === 0x06054b50) { e = i; break; }
+    if (e < 0) throw new Error('not a zip');
+    const n = dv.getUint16(e + 10, true); let p = dv.getUint32(e + 16, true);
+    const out = {};
+    for (let i = 0; i < n; i++) {
+      if (dv.getUint32(p, true) !== 0x02014b50) throw new Error('bad zip');
+      const method = dv.getUint16(p + 10, true), cs = dv.getUint32(p + 20, true), nl = dv.getUint16(p + 28, true), el = dv.getUint16(p + 30, true), cl = dv.getUint16(p + 32, true), lo = dv.getUint32(p + 42, true);
+      const name = dec.decode(u8.subarray(p + 46, p + 46 + nl));
+      const ds = lo + 30 + dv.getUint16(lo + 26, true) + dv.getUint16(lo + 28, true);
+      out[name] = { method, data: u8.subarray(ds, ds + cs) };
+      p += 46 + nl + el + cl;
+    }
+    return {
+      has: nm => !!out[nm],
+      async text(nm) {
+        const f = out[nm]; if (!f) return null;
+        if (f.method === 0) return dec.decode(f.data);
+        if (f.method !== 8) throw new Error('zip method');
+        const ab = await new Response(new Blob([f.data]).stream().pipeThrough(new DecompressionStream('deflate-raw'))).arrayBuffer();
+        return dec.decode(ab);
+      }
+    };
+  }
+  const parse = s => new DOMParser().parseFromString(s, 'application/xml');
+  const els = (node, name) => Array.from(node.getElementsByTagNameNS('*', name));
+  const siText = si => els(si, 't').filter(tn => { let p = tn.parentNode; while (p && p !== si) { if (p.localName === 'rPh') return false; p = p.parentNode; } return true; }).map(tn => tn.textContent).join('');
+  async function read(buf) {
+    const z = await unzip(buf);
+    let path = 'xl/worksheets/sheet1.xml';
+    try {
+      const wb = parse(await z.text('xl/workbook.xml')), rels = parse(await z.text('xl/_rels/workbook.xml.rels'));
+      const sh = els(wb, 'sheet')[0];
+      const id = sh.getAttributeNS('http://schemas.openxmlformats.org/officeDocument/2006/relationships', 'id') || sh.getAttribute('r:id');
+      const rel = els(rels, 'Relationship').find(r => r.getAttribute('Id') === id);
+      let tg = rel.getAttribute('Target'); tg = tg[0] === '/' ? tg.slice(1) : 'xl/' + tg;
+      if (z.has(tg)) path = tg;
+    } catch (e) { }
+    let ss = [];
+    if (z.has('xl/sharedStrings.xml')) ss = els(parse(await z.text('xl/sharedStrings.xml')), 'si').map(siText);
+    const doc = parse(await z.text(path)), rows = [];
+    els(doc, 'row').forEach((rw, ri) => {
+      const r = (parseInt(rw.getAttribute('r'), 10) || ri + 1) - 1, arr = rows[r] = rows[r] || [];
+      let ci = 0;
+      els(rw, 'c').forEach(c => {
+        const ref = c.getAttribute('r');
+        if (ref) { const L = ref.replace(/\d+/g, ''); let k = 0; for (const ch of L) k = k * 26 + (ch.charCodeAt(0) - 64); ci = k - 1; }
+        const tp = c.getAttribute('t'), v = els(c, 'v')[0];
+        let val = '';
+        if (tp === 's') val = ss[parseInt(v ? v.textContent : '', 10)] || '';
+        else if (tp === 'inlineStr') { const is = els(c, 'is')[0]; val = is ? siText(is) : ''; }
+        else if (tp === 'b') val = v && v.textContent === '1' ? 'TRUE' : 'FALSE';
+        else if (v) { val = tp === 'str' || tp === 'e' ? v.textContent : (isNaN(+v.textContent) ? v.textContent : +v.textContent); }
+        arr[ci] = val; ci++;
+      });
+    });
+    for (let i = 0; i < rows.length; i++) { const a = rows[i] || []; for (let j = 0; j < a.length; j++) if (a[j] == null) a[j] = ''; rows[i] = a; }
+    return rows;
+  }
+  return { write, read };
+})();
+
+/* ================= QUIZ LIBRARY ================= */
+const TIMES = [5, 10, 15, 20, 30, 45, 60, 90, 120];
+let QUIZZES = LS.get('mkq.quizzes', null);
+function sampleQuiz() {
+  const q = (text, opts, correct, time) => ({ id: rid(6), type: 'quiz', text, opts, correct, time: time || 20, pts: 1, img: '' });
+  const tf = (text, ok, time) => ({ id: rid(6), type: 'tf', text, opts: ['', '', '', ''], correct: [ok ? 0 : 1], time: time || 15, pts: 1, img: '' });
+  return {
+    id: rid(8), title: 'An toàn thông tin cơ bản (mẫu)', updated: Date.now(), questions: [
+      q('Mật khẩu nào sau đây an toàn nhất?', ['123456', 'Metkraft2026', 'T7!mq#Lz9@vRx2', 'ngày sinh của bạn'], [2]),
+      tf('Có thể dùng chung một mật khẩu cho email công ty và mạng xã hội cá nhân.', false),
+      q('Nhận email lạ yêu cầu bấm link để "xác minh tài khoản", bạn nên làm gì?', ['Bấm link và đăng nhập', 'Chuyển tiếp cho đồng nghiệp', 'Không bấm, báo cho IT', 'Trả lời email để hỏi lại'], [2]),
+      tf('Khi rời bàn làm việc, cần khóa màn hình máy tính (Windows + L).', true, 10),
+      q('Dữ liệu nào sau đây là dữ liệu cá nhân cần bảo vệ?', ['Số CCCD của nhân viên', 'Logo công ty', 'Số điện thoại cá nhân', 'Bảng giá niêm yết công khai'], [0, 2], 30),
+      q('Nhặt được USB lạ ở bãi xe, bạn nên?', ['Cắm vào máy công ty xem của ai', 'Giao cho bộ phận IT', 'Cắm vào máy ở nhà', 'Format rồi dùng'], [1])
+    ]
+  };
+}
+if (!QUIZZES) { QUIZZES = [sampleQuiz()]; LS.set('mkq.quizzes', QUIZZES); }
+function saveQuizzes() { if (!LS.set('mkq.quizzes', QUIZZES)) { toast(t('storeFull')); return false; } return true; }
+function validQ(q) {
+  if (!q || !String(q.text || '').trim()) return false;
+  if (q.type === 'tf') return q.correct.length === 1 && (q.correct[0] === 0 || q.correct[0] === 1);
+  const ne = q.opts.map((o, i) => String(o || '').trim() ? i : -1).filter(i => i >= 0);
+  return ne.length >= 2 && q.correct.length >= 1 && q.correct.every(c => ne.includes(c));
+}
+const blankQ = type => ({ id: rid(6), type, text: '', opts: ['', '', '', ''], correct: type === 'tf' ? [0] : [], time: 20, pts: 1, img: '' });
+
+/* ---------- modal ---------- */
+let MODAL = null;
+function ask(msg, onYes) { MODAL = { kind: 'ask', msg, onYes }; render(); }
+function closeModal() { MODAL = null; render(); }
+function modalHtml() {
+  if (!MODAL) return '';
+  if (MODAL.kind === 'ask') return `<div class="ov"><div class="modal"><h3>${esc(MODAL.msg)}</h3><div class="row" style="margin-top:18px;justify-content:flex-end"><button class="btn" data-act="m-no">${t('no')}</button><button class="btn pri" data-act="m-yes">${t('yes')}</button></div></div></div>`;
+  if (MODAL.kind === 'setup') {
+    const o = MODAL.opts;
+    return `<div class="ov"><div class="modal"><h2>${t('setup')}</h2><p class="mut">${esc(MODAL.quiz.title)}</p>
+      <label class="l">${t('mode')}</label>
+      <div class="seg"><button data-act="s-mode" data-v="0" class="${o.team ? '' : 'on'}">${t('classic')}</button><button data-act="s-mode" data-v="1" class="${o.team ? 'on' : ''}">${t('teamMode')}</button></div>
+      ${o.team ? `<label class="l">${t('teamCount')}</label>
+        <div class="seg">${[2, 3, 4, 5, 6].map(n => `<button data-act="s-tc" data-v="${n}" class="${o.teams.length === n ? 'on' : ''}">${n}</button>`).join('')}</div>
+        <label class="l">${t('teamNames')}</label>
+        ${o.teams.map((nm, i) => `<input class="field" style="margin-bottom:6px" data-tn="${i}" maxlength="20" value="${esc(nm)}">`).join('')}
+        <label class="l">${t('assign')}</label>
+        <div class="seg"><button data-act="s-as" data-v="choose" class="${o.assign === 'choose' ? 'on' : ''}">${t('choose')}</button><button data-act="s-as" data-v="auto" class="${o.assign === 'auto' ? 'on' : ''}">${t('auto')}</button></div>` : ''}
+      <label class="chk" style="margin-top:16px"><input type="checkbox" data-so="shuffleQ" ${o.shuffleQ ? 'checked' : ''}>${t('shuffleQ')}</label>
+      <label class="chk"><input type="checkbox" data-so="shuffleA" ${o.shuffleA ? 'checked' : ''}>${t('shuffleA')}</label>
+      <div class="row" style="margin-top:18px;justify-content:flex-end"><button class="btn" data-act="m-no">${t('no')}</button><button class="btn pri" data-act="s-create">${t('create')}</button></div>
+    </div></div>`;
+  }
+  return '';
+}
+const defTeams = n => Array.from({ length: n }, (_, i) => (LANG === 'vi' ? 'Đội ' : 'Team ') + (i + 1));
+
+/* ---------- library view ---------- */
+function viewLibrary() {
+  const saved = LS.get('mkq.game', null);
+  const resumable = saved && saved.phase !== 'podium' && Date.now() - (saved.saved || 0) < 6 * 3600e3;
+  return `<div class="bar">${brand('#/host')}<span class="tag">${t('host')}</span><div class="sp"></div><a class="btn sm ghost" href="#/">${t('join')}</a>${langBtn()}</div>
+  <div class="wrap">
+    ${resumable ? `<div class="banner"><b>${t('resume')}</b><span>PIN ${esc(saved.pin)} · ${esc(saved.title)}</span><div class="sp"></div><button class="btn sm pri" data-act="resume">${t('resumeBtn')}</button><button class="btn sm dark" data-act="discard">${t('discard')}</button></div>` : ''}
+    <div class="row" style="margin-bottom:16px"><h1>${t('library')}</h1><div class="sp"></div>
+      <button class="btn pri" data-act="new">+ ${t('newQuiz')}</button>
+      <button class="btn" data-act="import">${t('importX')}</button>
+      <button class="btn" data-act="template">${t('template')}</button>
+      <a class="btn" href="#/reports">${t('reports')}</a>
+      <input type="file" id="xfile" accept=".xlsx" hidden></div>
+    ${QUIZZES.length ? `<div class="grid">${QUIZZES.map(q => {
+      const ok = q.questions.filter(validQ).length, bad = q.questions.length - ok;
+      return `<div class="card"><h3 style="margin-bottom:6px">${esc(q.title || t('untitled'))}</h3>
+        <div class="mut" style="margin-bottom:12px;font-size:14px">${ok} ${t('questions')}${bad ? ` · <span style="color:var(--red)">${bad} ${t('invalid')}</span>` : ''}</div>
+        <div class="row"><button class="btn pri sm" data-act="play" data-id="${q.id}">▶ ${t('play')}</button><a class="btn sm" href="#/edit/${q.id}">${t('edit')}</a>
+        <button class="btn sm" data-act="export" data-id="${q.id}">${t('exportX')}</button><button class="btn sm" data-act="dupq" data-id="${q.id}">${t('dup')}</button>
+        <button class="btn sm" data-act="delq" data-id="${q.id}">${t('del')}</button></div></div>`;
+    }).join('')}</div>` : `<p class="mut">${t('empty')}</p>`}
+  </div>${modalHtml()}`;
+}
+
+/* ---------- Excel import / export of quizzes ---------- */
+const X_HEAD = () => LANG === 'vi'
+  ? ['Câu hỏi', 'Loại (quiz/tf)', 'Đáp án A', 'Đáp án B', 'Đáp án C', 'Đáp án D', 'Đáp án đúng', 'Thời gian (giây)', 'Điểm (1000/2000/0)']
+  : ['Question', 'Type (quiz/tf)', 'Answer A', 'Answer B', 'Answer C', 'Answer D', 'Correct', 'Time (seconds)', 'Points (1000/2000/0)'];
+function quizToRows(q) {
+  const rows = [X_HEAD()];
+  q.questions.forEach(k => {
+    if (k.type === 'tf') rows.push([k.text, 'tf', '', '', '', '', k.correct[0] === 0 ? 'T' : 'F', k.time, k.pts * 1000]);
+    else rows.push([k.text, 'quiz', k.opts[0] || '', k.opts[1] || '', k.opts[2] || '', k.opts[3] || '', k.correct.map(c => LETTERS[c]).join(','), k.time, k.pts * 1000]);
+  });
+  return rows;
+}
+const X_W = [60, 14, 26, 26, 26, 26, 14, 16, 18];
+const safeName = s => String(s || 'quiz').replace(/[\\/:*?"<>|]+/g, ' ').trim().slice(0, 60) || 'quiz';
+function exportQuiz(q) { download(XL.write([{ name: 'Questions', rows: quizToRows(q), widths: X_W }]), safeName(q.title) + '.xlsx'); }
+function downloadTemplate() {
+  const guide = LANG === 'vi' ? [['Hướng dẫn'],
+  ['Mỗi dòng trong sheet "Questions" là một câu hỏi. Không xóa dòng tiêu đề.'],
+  ['Loại: quiz = trắc nghiệm 2–4 đáp án; tf = Đúng/Sai.'],
+  ['Đáp án đúng: với quiz ghi A, B, C hoặc D (nhiều đáp án đúng: A,C). Với tf ghi T (Đúng) hoặc F (Sai).'],
+  ['Thời gian: 5–240 giây. Điểm: 1000 (chuẩn), 2000 (gấp đôi), 0 (không tính điểm).'],
+  ['Tên file sẽ thành tiêu đề bộ câu hỏi.']]
+    : [['Guide'], ['Each row in the "Questions" sheet is one question. Keep the header row.'], ['Type: quiz = 2–4 answers; tf = True/False.'],
+    ['Correct: for quiz use A, B, C or D (several: A,C). For tf use T or F.'], ['Time: 5–240 seconds. Points: 1000, 2000 or 0.'], ['The file name becomes the quiz title.']];
+  download(XL.write([{ name: 'Questions', rows: quizToRows(sampleQuiz()), widths: X_W }, { name: 'Guide', rows: guide, widths: [110] }]), 'metkraft-quiz-template.xlsx');
+}
+function rowsToQuestions(rows) {
+  const out = [];
+  rows.slice(1).forEach(r => {
+    const g = i => String(r[i] == null ? '' : r[i]).trim();
+    const text = g(0); if (!text) return;
+    const ty = g(1).toLowerCase(), cr = g(6).toUpperCase();
+    const isTF = /^(tf|t\/f|true|đúng|dung|đ\/s)/.test(ty) || (!g(2) && !g(3) && /^(T|F|TRUE|FALSE|ĐÚNG|SAI|DUNG|Đ|S)$/.test(cr));
+    let time = parseInt(g(7), 10); if (!(time >= 5 && time <= 240)) time = 20;
+    const pv = g(8).toLowerCase(); const pts = /^(0|none|không|khong)/.test(pv) ? 0 : /^(2000|2|double|gấp)/.test(pv) ? 2 : 1;
+    if (isTF) out.push({ id: rid(6), type: 'tf', text, opts: ['', '', '', ''], correct: [/^(T|TRUE|ĐÚNG|DUNG|Đ|1|A)$/.test(cr) ? 0 : 1], time, pts, img: '' });
+    else {
+      const opts = [g(2), g(3), g(4), g(5)];
+      const correct = [...new Set(cr.split(/[^A-D1-4]+/).filter(Boolean).map(c => /[1-4]/.test(c[0]) ? +c[0] - 1 : c.charCodeAt(0) - 65))].filter(i => i >= 0 && i < 4 && opts[i]);
+      out.push({ id: rid(6), type: 'quiz', text, opts, correct, time, pts, img: '' });
+    }
+  });
+  return out;
+}
+async function importFile(file) {
+  try {
+    const rows = await XL.read(await file.arrayBuffer());
+    const qs = rowsToQuestions(rows);
+    if (!qs.length) throw new Error('empty');
+    QUIZZES.unshift({ id: rid(8), title: file.name.replace(/\.xlsx$/i, ''), updated: Date.now(), questions: qs });
+    saveQuizzes(); toast(`${t('imported')}: ${qs.length} ${t('questions')}`); render();
+  } catch (e) { console.error(e); toast(t('importFail')); }
+}
+
+/* ---------- editor ---------- */
+let EDIT = null, saveT;
+function editSave() { clearTimeout(saveT); saveT = setTimeout(() => { if (EDIT) { EDIT.updated = Date.now(); saveQuizzes(); } }, 400); }
+function qCardHtml(q, i, n) {
+  const tf = q.type === 'tf';
+  return `<div class="qcard ${validQ(q) ? '' : 'bad'}" data-qi="${i}">
+    <div class="qhead"><span class="qnum">${i + 1}</span>
+      <select class="field" style="width:auto" data-f="type"><option value="quiz" ${tf ? '' : 'selected'}>${t('typeQuiz')}</option><option value="tf" ${tf ? 'selected' : ''}>${t('typeTF')}</option></select>
+      <select class="field" style="width:auto" data-f="time" title="${t('time')}">${TIMES.map(s => `<option value="${s}" ${q.time === s ? 'selected' : ''}>${s}s</option>`).join('')}</select>
+      <select class="field" style="width:auto" data-f="pts" title="${t('pts')}"><option value="1" ${q.pts === 1 ? 'selected' : ''}>${t('std')}</option><option value="2" ${q.pts === 2 ? 'selected' : ''}>${t('dbl')}</option><option value="0" ${q.pts === 0 ? 'selected' : ''}>${t('none')}</option></select>
+      <div class="sp"></div>
+      <button class="btn sm" data-qa="up" ${i === 0 ? 'disabled' : ''}>↑</button><button class="btn sm" data-qa="down" ${i === n - 1 ? 'disabled' : ''}>↓</button>
+      <button class="btn sm" data-qa="dup">${t('dup')}</button><button class="btn sm" data-qa="del">${t('del')}</button></div>
+    <textarea class="field" rows="2" data-f="text" maxlength="300" placeholder="${t('qText')}">${esc(q.text)}</textarea>
+    ${tf ? `<div class="row" style="margin-top:8px"><div class="seg"><button data-qa="tf0" class="${q.correct[0] === 0 ? 'on' : ''}">${t('tfT')}</button><button data-qa="tf1" class="${q.correct[0] === 1 ? 'on' : ''}">${t('tfF')}</button></div><span class="mut" style="font-size:13px">← ${t('markOk')}</span></div>`
+      : `<div class="opts">${[0, 1, 2, 3].map(o => `<div class="opt"><span class="ltr t${o}">${LETTERS[o]}</span><input type="text" data-o="${o}" maxlength="120" placeholder="${t('optPh')} ${LETTERS[o]}" value="${esc(q.opts[o] || '')}"><input type="checkbox" data-c="${o}" title="${t('markOk')}" ${q.correct.includes(o) ? 'checked' : ''}></div>`).join('')}</div>`}
+    <div class="row" style="margin-top:10px">${q.img ? `<img class="thumb" src="${q.img}" alt=""><button class="btn sm" data-qa="imgdel">${t('rmImage')}</button>` : `<button class="btn sm" data-qa="img">+ ${t('image')}</button>`}
+      <span class="mut qv" style="font-size:12px;color:var(--red)">${validQ(q) ? '' : t('qInvalid')}</span></div>
+  </div>`;
+}
+function viewEditor(id) {
+  EDIT = QUIZZES.find(q => q.id === id);
+  if (!EDIT) { location.hash = '#/host'; return ''; }
+  return `<div class="bar">${brand('#/host')}<div class="sp"></div><a class="btn pri sm" href="#/host">✓ ${t('back')}</a>${langBtn()}</div>
+  <div class="wrap"><label class="l">${t('title')}</label><input class="field" id="qtitle" maxlength="80" style="font-size:20px;font-weight:900;margin-bottom:18px" value="${esc(EDIT.title)}">
+    <div id="qlist">${EDIT.questions.map((q, i) => qCardHtml(q, i, EDIT.questions.length)).join('')}</div>
+    <div class="row"><button class="btn dark" data-act="addq">+ ${t('addQuiz')}</button><button class="btn" data-act="addtf">+ ${t('addTF')}</button></div>
+    <input type="file" id="imgfile" accept="image/*" hidden></div>`;
+}
+function refreshCard(i) { const el = document.querySelector(`.qcard[data-qi="${i}"]`); if (!el) return; const q = EDIT.questions[i], ok = validQ(q); el.classList.toggle('bad', !ok); el.querySelector('.qv').textContent = ok ? '' : t('qInvalid'); }
+function loadImage(file, cb) {
+  const fr = new FileReader();
+  fr.onload = () => { const im = new Image(); im.onload = () => { const k = Math.min(1, 720 / Math.max(im.width, im.height)); const c = document.createElement('canvas'); c.width = Math.round(im.width * k); c.height = Math.round(im.height * k); c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); cb(c.toDataURL('image/jpeg', 0.72)); }; im.onerror = () => toast('Image error'); im.src = fr.result; };
+  fr.readAsDataURL(file);
+}
+let imgTarget = -1;
+
+/* ---------- reports list ---------- */
+function viewReports() {
+  const reps = LS.get('mkq.reports', []);
+  return `<div class="bar">${brand('#/host')}<div class="sp"></div><a class="btn sm" href="#/host">${t('back')}</a>${langBtn()}</div>
+  <div class="wrap"><h1 style="margin-bottom:16px">${t('reports')}</h1>
+  ${reps.length ? `<table class="t"><tr><th>${t('date')}</th><th>${t('title')}</th><th>PIN</th><th>${t('players')}</th><th></th></tr>${reps.map((r, i) => `<tr><td>${new Date(r.created).toLocaleString(LANG === 'vi' ? 'vi-VN' : 'en-GB')}</td><td>${esc(r.title)}</td><td>${esc(r.pin)}</td><td>${Object.values(r.players).filter(p => !p.kicked).length}</td>
+    <td style="text-align:right"><button class="btn sm pri" data-act="rep-dl" data-i="${i}">${t('dlReport')}</button> <button class="btn sm" data-act="rep-del" data-i="${i}">${t('del')}</button></td></tr>`).join('')}</table>` : `<p class="mut">${t('noReports')}</p>`}</div>${modalHtml()}`;
+}
+
+/* ================= HOST GAME ================= */
+let offSince = 0; const offShown = () => !HOK && Date.now() - offSince > 3000;
+let G = null, HRT = null, HOK = false, hostTimer = null, ackQ = [], ackT = null, pushT = null, saveGT = null;
+let SOUND = LS.get('mkq.sound', true), AC = null, lastTickSec = -1;
+function beep(f, d, v) {
+  if (!SOUND) return;
+  try {
+    AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+    const o = AC.createOscillator(), g = AC.createGain(); o.type = 'triangle'; o.frequency.value = f; g.gain.value = v || 0.08;
+    o.connect(g); g.connect(AC.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.0001, AC.currentTime + d); o.stop(AC.currentTime + d);
+  } catch (e) { }
+}
+const active = () => Object.values(G.players).filter(p => !p.kicked);
+const nOpts = q => q.type === 'tf' ? 2 : q.opts.length;
+const optLabel = (q, i) => q.type === 'tf' ? (i === 0 ? t('tfT') : t('tfF')) : q.opts[i];
+const tileIdx = (q, i) => q.type === 'tf' ? (i === 0 ? 2 : 0) : i;
+
+function newGame(quiz, opts) {
+  let qs = quiz.questions.filter(validQ).map(q => JSON.parse(JSON.stringify(q)));
+  if (!qs.length) { toast(t('noValid')); return; }
+  qs.forEach(q => {
+    if (q.type !== 'quiz') { q.opts = []; return; }
+    let pairs = q.opts.map((o, i) => ({ o: String(o || '').trim(), ok: q.correct.includes(i) })).filter(p => p.o);
+    if (opts.shuffleA) shuffle(pairs);
+    q.opts = pairs.map(p => p.o); q.correct = pairs.map((p, i) => p.ok ? i : -1).filter(i => i >= 0);
+  });
+  if (opts.shuffleQ) shuffle(qs);
+  G = {
+    gid: rid(8), pin: String(100000 + Math.floor(Math.random() * 900000)), quizId: quiz.id, title: quiz.title || t('untitled'), qs,
+    opts: { team: !!opts.team, teams: opts.team ? opts.teams.map((s, i) => String(s || '').trim() || defTeams(i + 1)[i]) : [], assign: opts.assign || 'choose' },
+    phase: 'lobby', qi: -1, locked: false, players: {}, nextN: 1, created: Date.now(), seq: 0, scored: -1, res: null, tEnd: 0
+  };
+  hostConnect(); saveGame();
+  location.hash = '#/game'; render();
+}
+function hostConnect() {
+  if (HRT) HRT.close();
+  HOK = false; offSince = Date.now();
+  HRT = new RT([topicUp(G.pin), topicDn(G.pin)], (tp, ev, pl) => {
+    if (!G || tp !== topicUp(G.pin)) return;
+    if (ev === 'j') onJoin(pl); else if (ev === 'a') onAnswer(pl);
+  }, ok => { if (HOK && !ok || !offSince) offSince = Date.now(); HOK = ok; const d = $('#hdot'); if (d) d.classList.toggle('on', ok); if (ok) pushState(); });
+  clearInterval(hostTimer); hostTimer = setInterval(hostTick, 200);
+}
+function saveGame() {
+  if (!G) return;
+  const c = Object.assign({}, G, { qs: G.qs.map(q => Object.assign({}, q, { img: '' })), saved: Date.now() });
+  LS.set('mkq.game', c);
+}
+function saveSoon() { if (saveGT) return; saveGT = setTimeout(() => { saveGT = null; saveGame(); }, 1000); }
+function resumeGame() {
+  const s = LS.get('mkq.game', null); if (!s) return;
+  const lib = QUIZZES.find(q => q.id === s.quizId);
+  if (lib) s.qs.forEach(q => { const o = lib.questions.find(k => k.id === q.id); if (o && o.img) q.img = o.img; });
+  G = s; hostConnect();
+  if (G.phase === 'ready') startReady(G.qi); else if (G.phase === 'answer') doReveal();
+  location.hash = '#/game'; render();
+}
+function closeGame() {
+  if (G && HRT) { G.phase = 'closed'; pushState(); }
+  const rt = HRT; HRT = null; setTimeout(() => rt && rt.close(), 600);
+  clearInterval(hostTimer); G = null; LS.del('mkq.game');
+  location.hash = '#/host'; render();
+}
+
+/* ---------- messages ---------- */
+function ack(a) { ackQ.push(a); if (!ackT) ackT = setTimeout(() => { ackT = null; const b = ackQ; ackQ = []; if (HRT) HRT.send(topicDn(G.pin), 'k', { gid: G.gid, a: b }); }, 350); }
+function onJoin(m) {
+  if (!m || typeof m.pid !== 'string' || m.pid.length < 12) return;
+  const h = m.pid.slice(0, 8); let p = G.players[m.pid];
+  if (p) { ack(p.kicked ? { h, err: 'kicked' } : { h, n: p.n, name: p.name, team: p.team }); return; }
+  if (G.phase === 'podium' || G.phase === 'closed') return;
+  if (G.locked) { ack({ h, err: 'locked' }); return; }
+  let name = String(m.name || '').replace(/\s+/g, ' ').trim().slice(0, 16);
+  if (!name) { ack({ h, err: 'name' }); return; }
+  const taken = new Set(active().map(x => x.name.toLowerCase()));
+  if (taken.has(name.toLowerCase())) { let k = 2; while (taken.has((name.slice(0, 13) + ' ' + k).toLowerCase())) k++; name = name.slice(0, 13) + ' ' + k; }
+  let team = -1;
+  if (G.opts.team) {
+    const nt = G.opts.teams.length;
+    if (G.opts.assign === 'choose' && Number.isInteger(m.team) && m.team >= 0 && m.team < nt) team = m.team;
+    else { const cnt = Array(nt).fill(0); active().forEach(x => { if (x.team >= 0) cnt[x.team]++; }); team = cnt.indexOf(Math.min(...cnt)); }
+  }
+  p = G.players[m.pid] = { n: G.nextN++, name, team, score: 0, streak: 0, tms: 0, kicked: false, ans: [], at: Date.now() };
+  ack({ h, n: p.n, name: p.name, team: p.team });
+  beep(880, 0.08, 0.04); saveSoon();
+  if (G.phase === 'lobby') render(); else { const e = $('#acnt'); if (e) e.textContent = answeredCount() + ' / ' + active().length; }
+}
+const answeredCount = () => active().filter(p => p.ans[G.qi]).length;
+function onAnswer(m) {
+  if (G.phase !== 'answer' || !m || m.qi !== G.qi) return;
+  const p = G.players[m.pid]; if (!p || p.kicked || p.ans[G.qi]) return;
+  const q = G.qs[G.qi], now = Date.now(); if (now > G.tEnd + GRACE_MS) return;
+  const lim = q.time * 1000, hostMs = now - (G.tEnd - lim);
+  let ms = Number(m.ms); if (!(ms >= 0)) ms = hostMs;
+  ms = Math.round(Math.min(lim, Math.max(0, ms, hostMs - 4000)));
+  let c = Array.isArray(m.c) ? [...new Set(m.c.map(Number))].filter(i => Number.isInteger(i) && i >= 0 && i < nOpts(q)).sort((a, b) => a - b) : [];
+  if (!c.length) return;
+  if (q.correct.length === 1) c = c.slice(0, 1);
+  const cor = q.correct.slice().sort((a, b) => a - b);
+  const ok = c.length === cor.length && c.every((v, i) => v === cor[i]);
+  p.ans[G.qi] = { c, ms, ok, pts: ok ? Math.round((1 - (ms / lim) / 2) * 1000 * q.pts) : 0 };
+  saveSoon(); pushSoon();
+  const n = answeredCount(), e = $('#acnt'); if (e) e.textContent = n + ' / ' + active().length;
+  if (n >= active().length) setTimeout(() => { if (G && G.phase === 'answer') doReveal(); }, 500);
+}
+
+/* ---------- state broadcast ---------- */
+function buildState() {
+  const q = G.qs[G.qi];
+  const s = { gid: G.gid, seq: ++G.seq, ph: G.phase, qi: G.qi, total: G.qs.length, title: G.title, locked: G.locked, teams: G.opts.team ? G.opts.teams : null, assign: G.opts.assign, kick: Object.values(G.players).filter(p => p.kicked).map(p => p.n) };
+  if (q && ['ready', 'answer', 'reveal', 'board'].includes(G.phase)) s.q = { text: q.text, type: q.type, opts: q.type === 'tf' ? null : q.opts, time: q.time, multi: q.correct.length > 1 };
+  if (G.phase === 'ready' || G.phase === 'answer') s.left = Math.max(0, G.tEnd - Date.now());
+  if (G.phase === 'answer') s.ans = active().filter(p => p.ans[G.qi]).map(p => p.n);
+  if (['reveal', 'board', 'podium'].includes(G.phase)) s.res = G.res;
+  return s;
+}
+function pushState() { if (!G || !HRT) return; G.lastBeat = Date.now(); HRT.send(topicDn(G.pin), 's', buildState()); }
+function pushSoon() { if (pushT) return; pushT = setTimeout(() => { pushT = null; pushState(); }, 900); }
+
+/* ---------- phases ---------- */
+function ranked() { return active().sort((a, b) => b.score - a.score || a.tms - b.tms || a.n - b.n); }
+function teamStats(g) {
+  g = g || G;
+  return g.opts.teams.map((name, i) => { const ms = Object.values(g.players).filter(p => !p.kicked && p.team === i); const tot = ms.reduce((a, p) => a + p.score, 0); return { i, name, n: ms.length, total: tot, avg: ms.length ? Math.round(tot / ms.length) : 0 }; });
+}
+function startReady(qi) { G.qi = qi; G.phase = 'ready'; G.tEnd = Date.now() + READY_MS; G.res = null; saveGame(); pushState(); render(); }
+function startAnswer() { const q = G.qs[G.qi]; G.phase = 'answer'; G.tEnd = Date.now() + q.time * 1000; lastTickSec = -1; saveGame(); pushState(); render(); }
+function computeRes() {
+  const q = G.qs[G.qi], act = active();
+  if (G.scored !== G.qi) {
+    act.forEach(p => { const a = p.ans[G.qi]; if (a && a.ok) { p.score += a.pts; p.streak++; } else p.streak = 0; p.tms += a ? a.ms : q.time * 1000; });
+    G.scored = G.qi;
+  }
+  const r = {}; ranked().forEach((p, i) => { const a = p.ans[G.qi]; r[p.n] = [a ? a.pts : 0, p.score, i + 1, a ? (a.ok ? 1 : 0) : -1, p.streak]; });
+  G.res = { correct: q.correct, r, np: act.length };
+  if (G.opts.team) G.res.tr = teamStats().map(x => x.avg);
+}
+function doReveal() { if (G.qi < 0) return; computeRes(); G.phase = 'reveal'; beep(660, 0.25); setTimeout(() => beep(990, 0.35), 180); saveGame(); pushState(); render(); }
+function hostNext() {
+  if (G.phase === 'lobby') { if (active().length) startReady(0); }
+  else if (G.phase === 'answer') doReveal();
+  else if (G.phase === 'reveal') { if (G.qi >= G.qs.length - 1) toPodium(); else { G.phase = 'board'; saveGame(); pushState(); render(); } }
+  else if (G.phase === 'board') startReady(G.qi + 1);
+}
+function toPodium() {
+  if (G.phase === 'answer' || G.phase === 'ready') { if (G.phase === 'answer') computeRes(); }
+  if (!G.res) { const r = {}; ranked().forEach((p, i) => { r[p.n] = [0, p.score, i + 1, -1, p.streak]; }); G.res = { correct: [], r, np: active().length }; if (G.opts.team) G.res.tr = teamStats().map(x => x.avg); }
+  G.phase = 'podium'; G.ended = Date.now();
+  saveGame(); pushState(); saveReport(); render();
+  [523, 659, 784, 1047].forEach((f, i) => setTimeout(() => beep(f, 0.3), i * 160));
+}
+function hostTick() {
+  if (!G) return; const now = Date.now();
+  if (G.phase === 'ready') {
+    if (now >= G.tEnd) startAnswer(); else { const e = $('#rprog'); if (e) e.style.width = Math.max(0, (G.tEnd - now) / READY_MS * 100) + '%'; }
+  } else if (G.phase === 'answer') {
+    if (now >= G.tEnd + GRACE_MS) doReveal();
+    else {
+      const s = Math.max(0, Math.ceil((G.tEnd - now) / 1000)), e = $('#clock');
+      if (e) { e.textContent = s; e.classList.toggle('low', s <= 5); }
+      if (s !== lastTickSec) { lastTickSec = s; if (s <= 5 && s > 0) beep(440, 0.08, 0.05); }
+    }
+  }
+  const w = $('#hoff'); if (w) w.hidden = !offShown();
+  if (now - (G.lastBeat || 0) >= BEAT_MS) pushState();
+}
+
+/* ---------- report ---------- */
+function reportSheets(g) {
+  const pls = Object.values(g.players).filter(p => !p.kicked).sort((a, b) => b.score - a.score || a.tms - b.tms || a.n - b.n);
+  const tm = g.opts.team, tn = p => tm ? (g.opts.teams[p.team] || '') : '';
+  const lab = (q, i) => q.type === 'tf' ? (i === 0 ? t('tfT') : t('tfF')) : LETTERS[i] + '. ' + q.opts[i];
+  const played = g.qs.filter((_, i) => i <= g.scored);
+  const sum = [[g.title], [new Date(g.created).toLocaleString(LANG === 'vi' ? 'vi-VN' : 'en-GB'), 'PIN ' + g.pin, pls.length + ' ' + t('players')], [],
+  [t('cRank'), t('cNick')].concat(tm ? [t('cTeam')] : [], [t('cScore'), t('cCorrect'), t('cTotalQ'), t('cPct'), t('cAvgT')])];
+  pls.forEach((p, i) => {
+    const as = played.map((_, k) => p.ans[k]).filter(Boolean), ok = as.filter(a => a.ok).length;
+    sum.push([i + 1, p.name].concat(tm ? [tn(p)] : [], [p.score, ok, played.length, played.length ? Math.round(ok / played.length * 100) : 0, as.length ? +(as.reduce((s, a) => s + a.ms, 0) / as.length / 1000).toFixed(1) : '']));
+  });
+  const det = [[t('cNick')].concat(tm ? [t('cTeam')] : [], [t('cQ'), t('cQuestion'), t('cAnswer'), t('cIsOk'), t('cTime'), t('cPts')])];
+  pls.forEach(p => played.forEach((q, k) => { const a = p.ans[k]; det.push([p.name].concat(tm ? [tn(p)] : [], [k + 1, q.text, a ? a.c.map(c => lab(q, c)).join('; ') : '', a ? (a.ok ? t('cOk') : t('cNo')) : t('noAns'), a ? +(a.ms / 1000).toFixed(1) : '', a ? a.pts : 0])); }));
+  const qs = [[t('cQ'), t('cQuestion'), t('cRight'), t('cAnswered'), t('cCorrect'), t('cPct'), 'A', 'B', 'C', 'D']];
+  played.forEach((q, k) => {
+    const as = pls.map(p => p.ans[k]).filter(Boolean), ok = as.filter(a => a.ok).length, cnt = [0, 1, 2, 3].map(i => i < nOpts(q) ? as.filter(a => a.c.includes(i)).length : '');
+    qs.push([k + 1, q.text, q.correct.map(c => lab(q, c)).join('; '), as.length, ok, pls.length ? Math.round(ok / pls.length * 100) : 0].concat(cnt));
+  });
+  const sheets = [{ name: t('rSummary'), rows: sum, header: 3, widths: [8, 26, 18, 12, 14, 14, 10, 20] }, { name: t('rDetail'), rows: det, widths: tm ? [24, 16, 6, 50, 36, 12, 14, 10] : [24, 6, 50, 36, 12, 14, 10] }, { name: t('rQuestions'), rows: qs, widths: [6, 50, 36, 18, 14, 10, 8, 8, 8, 8] }];
+  if (tm) {
+    const ts = teamStats(g).sort((a, b) => b.avg - a.avg);
+    sheets.push({ name: t('rTeams'), rows: [[t('cRank'), t('cTeam'), t('members'), t('avg'), t('cScore')]].concat(ts.map((x, i) => [i + 1, x.name, x.n, x.avg, x.total])), widths: [8, 24, 14, 14, 14] });
+  }
+  return sheets;
+}
+function downloadReport(g) {
+  const d = new Date(g.created), pad = n => String(n).padStart(2, '0');
+  download(XL.write(reportSheets(g)), `report-${safeName(g.title)}-${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}-${pad(d.getHours())}${pad(d.getMinutes())}.xlsx`);
+}
+function saveReport() {
+  const reps = LS.get('mkq.reports', []).filter(r => r.gid !== G.gid);
+  reps.unshift({ gid: G.gid, pin: G.pin, title: G.title, created: G.created, opts: G.opts, scored: G.scored, players: G.players, qs: G.qs.map(q => Object.assign({}, q, { img: '' })) });
+  while (reps.length > 15) reps.pop();
+  while (reps.length && !LS.set('mkq.reports', reps)) reps.pop();
+}
+
+/* ---------- host views ---------- */
+function hud(mid, btns) {
+  return `<div class="hud"><span style="font-weight:900"><span style="color:var(--red)">MET</span>KRAFT</span><span class="dot ${HOK ? 'on' : ''}" id="hdot"></span>${mid}<div class="sp"></div>${btns}
+    ${langBtn()}<button class="btn sm" data-act="g-sound" title="${t('sound')}">${SOUND ? '🔊' : '🔇'}</button><button class="btn sm" data-act="g-full" title="${t('full')}">⛶</button></div>
+    <div class="warn" id="hoff" ${offShown() ? '' : 'hidden'} style="border-radius:0;border-width:0 0 2px">${t('offline')}</div>`;
+}
+const qLabel = () => `<span>${t('question')} ${G.qi + 1} ${t('of')} ${G.qs.length}</span><span class="pin">PIN ${G.pin}</span>`;
+function tilesHtml(q, mode) {
+  const n = nOpts(q), counts = mode === 'reveal' ? Array.from({ length: n }, (_, i) => active().filter(p => p.ans[G.qi] && p.ans[G.qi].c.includes(i)).length) : null;
+  return `<div class="tiles">${Array.from({ length: n }, (_, i) => { const k = tileIdx(q, i), ok = q.correct.includes(i); return `<div class="tile t${k} ${mode === 'reveal' ? (ok ? 'okk' : 'dim') : ''}">${SHAPES[k]}<span>${q.type === 'tf' ? '' : `<span class="lt">${LETTERS[i]}.</span> `}${esc(optLabel(q, i))}</span>${counts ? `<span class="num">${counts[i]}</span>` : ''}</div>`; }).join('')}</div>`;
+}
+function viewGame() {
+  if (!G) { location.hash = '#/host'; return ''; }
+  const act = active(), q = G.qs[G.qi];
+  let body = '';
+  if (G.phase === 'lobby') {
+    const url = location.href.split('#')[0], joinUrl = url + '#/join/' + G.pin;
+    let qr = ''; try { const c = qrcode(0, 'M'); c.addData(joinUrl); c.make(); qr = c.createSvgTag({ cellSize: 4, margin: 0, scalable: true }); } catch (e) { }
+    const chip = p => `<button class="chip ${Date.now() - p.at < 800 ? 'new' : ''}" data-act="kick" data-pid="${Object.keys(G.players).find(k => G.players[k] === p)}">${esc(p.name)}</button>`;
+    body = hud(`<span>${esc(G.title)}</span>`, `<button class="btn sm" data-act="g-lock">${G.locked ? '🔒 ' + t('unlock') : t('lock')}</button><button class="btn sm" data-act="g-cancel">${t('cancel')}</button><button class="btn pri" data-act="g-next" ${act.length ? '' : 'disabled'}>▶ ${t('start')}</button>`) +
+      `<div class="lobby"><div class="lobL">
+        <div class="mut" style="font-weight:700">${t('joinAt')}</div><div class="url">${esc(url.replace(/^https?:\/\//, ''))}</div>
+        <div class="mut" style="font-weight:700;margin-top:6px">${t('pin')}</div><div class="bigpin" id="bigpin">${G.pin}</div>
+        ${location.protocol === 'file:' ? `<div class="warn">${t('fileWarn')}</div>` : `<div class="qr">${qr}</div><div class="mut">${t('orScan')}</div>`}
+      </div><div class="lobR"><div class="row"><h2>${t('players')} <span style="color:var(--red)" id="pcount">${act.length}</span></h2><div class="sp"></div><span class="mut" style="font-size:13px">${act.length ? t('kickHint') : ''}</span></div>
+        ${!act.length ? `<p class="mut" style="font-size:20px;margin-top:30px">${t('waiting')}</p>` : G.opts.team
+        ? G.opts.teams.map((nm, i) => { const ms = act.filter(p => p.team === i); return `<h3 style="margin-top:18px">${esc(nm)} <span class="mut">(${ms.length})</span></h3><div class="chips">${ms.map(chip).join('')}</div>`; }).join('')
+        : `<div class="chips">${act.map(chip).join('')}</div>`}
+      </div></div>`;
+  } else if (G.phase === 'ready') {
+    body = hud(qLabel(), `<button class="btn sm" data-act="g-end">${t('endGame')}</button>`) +
+      `<div class="ready"><div class="n">${t('question')} ${G.qi + 1} ${t('of')} ${G.qs.length}</div><div class="qtext">${esc(q.text)}</div><div class="prog"><i id="rprog"></i></div></div>`;
+  } else if (G.phase === 'answer') {
+    body = hud(qLabel(), `<button class="btn sm" data-act="g-end">${t('endGame')}</button><button class="btn sm" data-act="g-next">${t('skip')} ▶</button>`) +
+      `<div class="qstage"><div class="qtext">${esc(q.text)}</div>
+        <div class="qmid"><div class="clock" id="clock">${Math.max(0, Math.ceil((G.tEnd - Date.now()) / 1000))}</div>${q.img ? `<img src="${q.img}" alt="">` : ''}<div class="cnt"><b id="acnt">${answeredCount()} / ${act.length}</b>${t('answered')}</div></div>
+        ${q.correct.length > 1 ? `<div class="mut" style="text-align:center;font-weight:700">${t('multi')}</div>` : ''}${tilesHtml(q, 'answer')}</div>`;
+  } else if (G.phase === 'reveal') {
+    const n = nOpts(q), counts = Array.from({ length: n }, (_, i) => act.filter(p => p.ans[G.qi] && p.ans[G.qi].c.includes(i)).length), mx = Math.max(1, ...counts);
+    body = hud(qLabel(), `<button class="btn sm" data-act="g-end">${t('endGame')}</button><button class="btn pri" data-act="g-next">${G.qi >= G.qs.length - 1 ? t('podium') : t('next')} ▶</button>`) +
+      `<div class="qstage"><div class="qtext">${esc(q.text)}</div>
+        <div class="bars">${counts.map((c, i) => `<div class="barc"><b>${c}${q.correct.includes(i) ? ' ✓' : ''}</b><div class="t${tileIdx(q, i)}" style="height:${Math.round(c / mx * 80)}%;opacity:${q.correct.includes(i) ? 1 : .35}"></div></div>`).join('')}</div>
+        ${tilesHtml(q, 'reveal')}</div>`;
+  } else if (G.phase === 'board') {
+    const top = ranked().slice(0, 5);
+    const ts = G.opts.team ? teamStats().sort((a, b) => b.avg - a.avg) : null;
+    body = hud(qLabel(), `<button class="btn sm" data-act="g-end">${t('endGame')}</button><button class="btn pri" data-act="g-next">${t('next')} ▶</button>`) +
+      `<div style="flex:1;display:flex;flex-wrap:wrap;align-items:center">
+        <div class="board"><h1 style="text-align:center;margin-bottom:8px">${t('leaderboard')}</h1>${top.map((p, i) => { const a = p.ans[G.qi]; return `<div class="brow"><span class="rk">${i + 1}</span><span>${esc(p.name)}${ts ? ` <span class="tag" style="color:var(--ink)">${esc(G.opts.teams[p.team])}</span>` : ''}</span><span class="sc">${p.score}${a && a.pts ? ` <span class="gn">+${a.pts}</span>` : ''}</span></div>`; }).join('')}</div>
+        ${ts ? `<div class="board"><h1 style="text-align:center;margin-bottom:8px">${t('teamBoard')}</h1>${ts.map((x, i) => `<div class="brow"><span class="rk">${i + 1}</span><span>${esc(x.name)} <span class="mut" style="font-size:14px">(${x.n})</span></span><span class="sc">${x.avg}</span></div>`).join('')}</div>` : ''}
+      </div>`;
+  } else if (G.phase === 'podium') {
+    const r = ranked(), ts = G.opts.team ? teamStats().sort((a, b) => b.avg - a.avg) : null;
+    const pod = (p, k) => p ? `<div class="pod p${k}"><div class="nm">${esc(p.name)}</div><div class="sc">${p.score}</div><div class="blk">${k}</div></div>` : '';
+    body = hud(`<span>${esc(G.title)}</span>`, `<button class="btn pri" data-act="g-report">⬇ ${t('dlReport')}</button><button class="btn sm" data-act="g-close">${t('toLibrary')}</button>`) +
+      `<h1 style="text-align:center;padding-top:18px">${t('podium')}</h1>
+      ${ts ? `<div style="text-align:center;margin-top:8px;font-weight:700">${ts.map((x, i) => `<span class="tag" style="font-size:15px;margin:3px;${i === 0 ? 'background:var(--red);color:#fff' : ''}">${i + 1}. ${esc(x.name)} — ${x.avg}</span>`).join('')}</div>` : ''}
+      <div class="podium">${pod(r[1], 2)}${pod(r[0], 1)}${pod(r[2], 3)}</div>`;
+  }
+  return `<div class="stage">${body}</div>${modalHtml()}`;
+}
+
+/* ================= PLAYER ================= */
+let P = null, PRT = null, pTimer = null, pKey = '';
+function playerStop() { if (PRT) PRT.close(); PRT = null; clearInterval(pTimer); P = null; pKey = ''; }
+function playerStart(pin) {
+  playerStop();
+  const sv = LS.get('mkq.player', null);
+  P = { pin, pid: rid(16), name: LS.get('mkq.name', ''), team: -1, n: 0, gid: null, stage: 'connecting', st: null, ok: false, t0: Date.now(), lastSt: 0, sel: [], myAns: null, acked: false, qKey: '', qStart: 0, err: '', lastJoin: 0, tries: 0, lastSend: 0 };
+  if (sv && sv.pin === pin && Date.now() - sv.at < 4 * 3600e3) { P.pid = sv.pid; P.name = sv.name; P.team = sv.team; P.savedGid = sv.gid; }
+  PRT = new RT([topicDn(pin)], onPlayerMsg, ok => { if (!P) return; P.ok = ok; const d = $('#pdot'); if (d) d.classList.toggle('on', ok); });
+  pTimer = setInterval(playerTick, 250);
+}
+function sendJoin() { P.lastJoin = Date.now(); P.tries++; restSend(topicUp(P.pin), 'j', { pid: P.pid, name: P.name, team: P.team }); }
+function sendAnswer() { P.lastSend = Date.now(); restSend(topicUp(P.pin), 'a', { pid: P.pid, qi: P.myAns.qi, c: P.myAns.c, ms: P.myAns.ms }); }
+function wake() { try { if (navigator.wakeLock) navigator.wakeLock.request('screen').catch(() => { }); } catch (e) { } }
+document.addEventListener('visibilitychange', () => { if (P && P.stage === 'in' && document.visibilityState === 'visible') wake(); });
+function onPlayerMsg(tp, ev, pl) {
+  if (!P || !pl) return;
+  if (ev === 's') {
+    if (P.gid && pl.gid !== P.gid) { P.gid = null; P.n = 0; P.stage = 'name'; P.myAns = null; P.err = ''; LS.del('mkq.player'); }
+    P.st = pl; P.lastSt = Date.now();
+    if (pl.ph === 'closed') { if (P.stage !== 'closed') { P.stage = 'closed'; LS.del('mkq.player'); } }
+    else if (P.stage === 'connecting' || P.stage === 'notfound') {
+      if (P.savedGid && P.savedGid === pl.gid && P.name) { P.stage = 'joining'; P.tries = 0; sendJoin(); } else P.stage = 'name';
+    }
+    if (P.n && Array.isArray(pl.kick) && pl.kick.includes(P.n)) { P.stage = 'kicked'; LS.del('mkq.player'); }
+    if (pl.ph === 'answer' && pl.q) {
+      const key = pl.gid + ':' + pl.qi;
+      if (P.qKey !== key) { P.qKey = key; P.qStart = performance.now() - Math.max(0, pl.q.time * 1000 - pl.left); P.sel = []; P.myAns = null; P.acked = false; P.up = false; }
+      if (P.n && Array.isArray(pl.ans) && pl.ans.includes(P.n)) P.acked = true;
+    }
+    playerRender();
+  } else if (ev === 'k' && Array.isArray(pl.a)) {
+    const a = pl.a.find(x => x.h === P.pid.slice(0, 8)); if (!a) return;
+    if (a.err) {
+      if (a.err === 'kicked') { P.stage = 'kicked'; LS.del('mkq.player'); }
+      else if (P.stage === 'joining') { P.stage = 'name'; P.err = a.err === 'locked' ? t('locked') : t('badName'); }
+    } else if (P.stage === 'joining' || P.stage === 'name') {
+      P.n = a.n; P.name = a.name; P.team = a.team; P.gid = pl.gid; P.stage = 'in'; P.err = '';
+      LS.set('mkq.player', { pin: P.pin, pid: P.pid, name: P.name, team: P.team, gid: P.gid, at: Date.now() }); wake();
+    }
+    playerRender();
+  }
+}
+function playerTick() {
+  if (!P) return; const now = Date.now();
+  if (P.stage === 'connecting' && now - P.t0 > 8000) { P.stage = 'notfound'; playerRender(); }
+  if (P.stage === 'joining' && now - P.lastJoin > 2000) { if (P.tries >= 8) { P.stage = 'name'; P.err = t('hostGone'); playerRender(); } else sendJoin(); }
+  const st = P.st;
+  if (P.stage === 'in' && st && st.ph === 'answer' && st.q) {
+    const lim = st.q.time * 1000, el = performance.now() - P.qStart, b = $('#pbar');
+    if (b) b.style.width = Math.max(0, 100 - el / lim * 100) + '%';
+    if (!P.myAns && el >= lim && !P.up) { P.up = true; playerRender(); }
+    if (P.myAns && !P.acked && now - P.lastSend > 2000 && el < lim + 5000) sendAnswer();
+  }
+  const hg = $('#phost'); if (hg) hg.hidden = !(P.stage === 'in' && P.lastSt && now - P.lastSt > 10000);
+}
+function playerAnswer(c) {
+  const st = P.st; if (!st || st.ph !== 'answer' || P.myAns) return;
+  const lim = st.q.time * 1000, ms = Math.round(Math.min(lim, Math.max(0, performance.now() - P.qStart)));
+  P.myAns = { qi: st.qi, c, ms }; sendAnswer(); playerRender();
+}
+function playerRender() {
+  if (!P || route().a !== 'join') return;
+  const st = P.st || {};
+  const key = [LANG, P.stage, P.err, st.gid, st.ph, st.qi, P.myAns ? 1 : 0, P.acked ? 1 : 0, P.up ? 1 : 0, P.sel.join(''), st.locked ? 1 : 0, (st.teams || []).join('|'), st.assign, P.team, st.res ? 1 : 0].join('~');
+  if (key === pKey) return; pKey = key;
+  const keep = $('#pname') ? $('#pname').value : null;
+  $('#app').innerHTML = viewPlayer();
+  const ni = $('#pname'); if (ni) { if (keep != null) ni.value = keep; ni.focus(); }
+}
+const ord = n => LANG === 'vi' ? `${t('rank')} ${n}` : `${n}${['th', 'st', 'nd', 'rd'][(n % 100 > 10 && n % 100 < 14) ? 0 : (n % 10 < 4 ? n % 10 : 0)]} place`;
+function viewPlayer() {
+  const st = P.st || {}, teams = st.teams;
+  const top = `<div class="pltop"><span class="dot ${P.ok ? 'on' : ''}" id="pdot"></span>${P.stage === 'in' ? `<span class="nm">${esc(P.name)}</span>${teams && P.team >= 0 ? `<span class="tag" style="color:var(--ink)">${esc(teams[P.team])}</span>` : ''}` : `<span><span style="color:var(--red)">MET</span>KRAFT QUIZ</span>`}
+    <div class="sp"></div><span>PIN ${esc(P.pin)}</span><button class="btn sm" style="border-color:#fff;background:transparent;color:#fff" data-act="p-leave">✕</button></div>
+    <div class="warn" id="phost" hidden style="border-radius:0;border-width:0 0 2px">${t('hostGone')}</div>`;
+  const mid = (h, cls) => `<div class="pl ${cls || ''}">${top}<div class="plmid ${cls ? 'fullc ' + cls : ''}">${h}</div>${foot()}</div>`;
+  const myRes = st.res && st.res.r ? st.res.r[P.n] : null;
+  const foot = () => P.stage === 'in' && myRes ? `<div class="plfoot"><span>${t('score')}: ${myRes[1]}</span><span>${ord(myRes[2])} / ${st.res.np}</span></div>` : '';
+  if (P.stage === 'connecting') return mid(`<h1>${t('connecting')}</h1>`);
+  if (P.stage === 'notfound') return mid(`<h1>PIN ${esc(P.pin)}</h1><p>${t('notFound')}</p><div class="row"><button class="btn pri" data-act="p-retry">${t('retry')}</button><button class="btn" data-act="p-home">${t('back')}</button></div>`);
+  if (P.stage === 'kicked') return mid(`<h1>${t('kicked')}</h1><button class="btn" data-act="p-home">${t('back')}</button>`);
+  if (P.stage === 'closed') return mid(`<h1>${t('thanks')}</h1><button class="btn" data-act="p-home">${t('back')}</button>`);
+  if (P.stage === 'joining') return mid(`<h1>${t('connecting')}</h1><p class="mut">${esc(P.name)}</p>`);
+  if (P.stage === 'name') {
+    const pick = teams && st.assign === 'choose';
+    return mid(`<h1>${esc(st.title || '')}</h1>${st.locked ? `<div class="warn">${t('locked')}</div>` : `
+      <input class="field namein" id="pname" maxlength="16" placeholder="${t('nick')}" value="${esc(P.name)}" autocomplete="off" style="max-width:340px">
+      ${pick ? `<div class="mut" style="font-weight:700">${t('pickTeam')}</div><div class="teams">${teams.map((nm, i) => `<button class="btn ${P.team === i ? 'dark' : ''}" data-act="p-team" data-v="${i}">${esc(nm)}</button>`).join('')}</div>` : ''}
+      ${P.err ? `<div class="warn">${esc(P.err)}</div>` : ''}
+      <button class="btn pri big" data-act="p-go">${t('go')}</button>`}`);
+  }
+  /* stage === 'in' */
+  const ph = st.ph, q = st.q;
+  if (ph === 'lobby') return mid(`<div class="big-ic res-ok">✓</div><h1>${t('youIn')}</h1><p>${t('seeName')}</p>`);
+  if (ph === 'ready' && q) return mid(`<div class="mut" style="font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red)">${t('question')} ${st.qi + 1} ${t('of')} ${st.total}</div><h1>${t('getReady')}</h1><p style="font-size:18px;font-weight:700">${esc(q.text)}</p>`);
+  if (ph === 'answer' && q) {
+    if (P.myAns) return mid(`<div class="big-ic ${P.acked ? 'res-ok' : 'res-na'}">${P.acked ? '✓' : '…'}</div><h1>${P.acked ? t('sent') : t('sending')}</h1><p class="mut">${t('waitOthers')}</p>`);
+    if (P.up) return mid(`<div class="big-ic res-na">⏱</div><h1>${t('timeUp')}</h1>`);
+    const n = q.type === 'tf' ? 2 : q.opts.length;
+    const lab = i => q.type === 'tf' ? (i === 0 ? t('tfT') : t('tfF')) : q.opts[i];
+    const ti = i => q.type === 'tf' ? (i === 0 ? 2 : 0) : i;
+    return `<div class="pl">${top}<div class="pbar"><i id="pbar" style="width:100%"></i></div><div class="plq">${esc(q.text)}${q.multi ? `<div class="mut" style="font-size:13px;margin-top:4px">${t('multi')}</div>` : ''}</div>
+      <div class="pltiles ${n <= 2 ? 'two' : ''}">${Array.from({ length: n }, (_, i) => `<button class="tile t${ti(i)} ${P.sel.includes(i) ? 'sel' : ''}" data-act="p-ans" data-v="${i}">${SHAPES[ti(i)]}<span>${q.type === 'tf' ? '' : `<span class="lt">${LETTERS[i]}.</span> `}${esc(lab(i))}</span></button>`).join('')}</div>
+      ${q.multi ? `<div style="padding:0 10px 12px"><button class="btn pri big" style="width:100%" data-act="p-submit" ${P.sel.length ? '' : 'disabled'}>${t('submit')}</button></div>` : ''}</div>`;
+  }
+  if ((ph === 'reveal' || ph === 'board') && st.res) {
+    if (!myRes) return mid(`<h1>${t('waitOthers')}</h1>`);
+    const [gain, , , ok, streak] = myRes;
+    return mid(`<div class="big-ic" style="background:rgba(0,0,0,.25)">${ok === 1 ? '✓' : ok === 0 ? '✕' : '⏱'}</div><h1>${ok === 1 ? t('correct') : ok === 0 ? t('wrong') : t('noAns')}</h1>
+      <div class="pts">+ ${gain}</div>${streak > 1 ? `<div style="font-weight:700">🔥 ${t('streak')}: ${streak}</div>` : ''}`, ok === 1 ? 'okb' : ok === 0 ? 'nob' : 'nab');
+  }
+  if (ph === 'podium' && st.res) {
+    let tr = '';
+    if (teams && st.res.tr && P.team >= 0) { const mine = st.res.tr[P.team], rk = st.res.tr.filter(v => v > mine).length + 1; tr = `<p style="font-weight:700">${esc(teams[P.team])}: ${ord(rk)} · ${t('avg')} ${mine}</p>`; }
+    return mid(`<div class="mut" style="font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--red)">${t('final')}</div>${myRes ? `<h1 style="font-size:44px">${ord(myRes[2])}</h1><div class="pts" style="background:var(--ink);color:#fff">${myRes[1]}</div>` : ''}${tr}<p>${t('thanks')}</p>`);
+  }
+  return mid(`<h1>${t('waitOthers')}</h1>`);
+}
+
+/* ================= HOME + ROUTER ================= */
+function viewHome() {
+  const sv = LS.get('mkq.player', null);
+  return `<div class="bar">${brand('#/')}<div class="sp"></div>${langBtn()}</div>
+  <div class="home"><div class="joinbox"><h1>${t('joinTitle')}</h1><p class="mut" style="margin:0 0 14px">${t('pin')}</p>
+    <input class="field pinin" id="hpin" inputmode="numeric" maxlength="6" placeholder="000000" autocomplete="off" value="${sv && Date.now() - sv.at < 4 * 3600e3 ? esc(sv.pin) : ''}">
+    <button class="btn pri big" style="width:100%;margin-top:12px" data-act="h-enter">${t('enter')}</button>
+    <p style="margin:18px 0 0"><a href="#/host" style="color:var(--mut);font-size:13px;font-weight:700">${t('hostLink')} →</a></p></div></div>`;
+}
+function route() { const p = location.hash.replace(/^#\/?/, '').split('/'); return { a: p[0] || '', b: p[1] || '' }; }
+function render() {
+  const r = route(); let html;
+  if (r.a === 'join' && /^\d{6}$/.test(r.b)) {
+    if (!P || P.pin !== r.b) playerStart(r.b);
+    pKey = ''; playerRender(); return;
+  }
+  if (P) playerStop();
+  if (r.a === 'host') html = viewLibrary();
+  else if (r.a === 'edit') html = viewEditor(r.b);
+  else if (r.a === 'reports') html = viewReports();
+  else if (r.a === 'game') html = viewGame();
+  else html = viewHome();
+  $('#app').innerHTML = html;
+  if (r.a === '' && $('#hpin') && !$('#hpin').value) $('#hpin').focus();
+}
+window.addEventListener('hashchange', () => { MODAL = null; render(); });
+window.addEventListener('beforeunload', e => { if (G && G.phase !== 'podium') { saveGame(); e.preventDefault(); e.returnValue = ''; } });
+
+/* ================= EVENTS ================= */
+function goJoin() { const v = ($('#hpin').value || '').replace(/\D/g, ''); if (v.length === 6) location.hash = '#/join/' + v; else toast(t('pin') + ': 6 digits'); }
+function goName() {
+  const st = P.st || {}, name = ($('#pname').value || '').replace(/\s+/g, ' ').trim().slice(0, 16);
+  if (!name) { P.err = t('badName'); playerRender(); return; }
+  if (st.teams && st.assign === 'choose' && P.team < 0) { P.err = t('pickTeam'); playerRender(); return; }
+  P.name = name; LS.set('mkq.name', name); P.err = ''; P.stage = 'joining'; P.tries = 0; sendJoin(); playerRender();
+}
+document.addEventListener('click', e => {
+  const lg = e.target.closest('[data-lang]'); if (lg) { setLang(lg.dataset.lang); return; }
+  const qa = e.target.closest('[data-qa]');
+  if (qa && EDIT) {
+    const i = +qa.closest('.qcard').dataset.qi, qs = EDIT.questions, a = qa.dataset.qa;
+    if (a === 'up' && i > 0) [qs[i - 1], qs[i]] = [qs[i], qs[i - 1]];
+    else if (a === 'down' && i < qs.length - 1) [qs[i + 1], qs[i]] = [qs[i], qs[i + 1]];
+    else if (a === 'dup') qs.splice(i + 1, 0, Object.assign(JSON.parse(JSON.stringify(qs[i])), { id: rid(6) }));
+    else if (a === 'del') qs.splice(i, 1);
+    else if (a === 'tf0') qs[i].correct = [0]; else if (a === 'tf1') qs[i].correct = [1];
+    else if (a === 'imgdel') qs[i].img = '';
+    else if (a === 'img') { imgTarget = i; $('#imgfile').click(); return; }
+    editSave(); render(); return;
+  }
+  const el = e.target.closest('[data-act]'); if (!el) return;
+  const a = el.dataset.act, id = el.dataset.id, quiz = id ? QUIZZES.find(q => q.id === id) : null;
+  switch (a) {
+    case 'h-enter': goJoin(); break;
+    case 'new': { const q = { id: rid(8), title: t('untitled'), updated: Date.now(), questions: [blankQ('quiz')] }; QUIZZES.unshift(q); saveQuizzes(); location.hash = '#/edit/' + q.id; break; }
+    case 'import': $('#xfile').click(); break;
+    case 'template': downloadTemplate(); break;
+    case 'export': exportQuiz(quiz); break;
+    case 'dupq': { const c = JSON.parse(JSON.stringify(quiz)); c.id = rid(8); c.title += ' (2)'; QUIZZES.splice(QUIZZES.indexOf(quiz) + 1, 0, c); saveQuizzes(); render(); break; }
+    case 'delq': ask(t('confirmDel'), () => { QUIZZES = QUIZZES.filter(q => q.id !== id); saveQuizzes(); }); break;
+    case 'play': if (!quiz.questions.some(validQ)) { toast(t('noValid')); break; } MODAL = { kind: 'setup', quiz, opts: { team: false, teams: defTeams(2), assign: 'choose', shuffleQ: false, shuffleA: false } }; render(); break;
+    case 'resume': resumeGame(); break;
+    case 'discard': LS.del('mkq.game'); render(); break;
+    case 'm-no': closeModal(); break;
+    case 'm-yes': { const f = MODAL.onYes; MODAL = null; f(); render(); break; }
+    case 's-mode': MODAL.opts.team = el.dataset.v === '1'; render(); break;
+    case 's-tc': { const n = +el.dataset.v, d = defTeams(n); MODAL.opts.teams = d.map((x, i) => MODAL.opts.teams[i] || x); render(); break; }
+    case 's-as': MODAL.opts.assign = el.dataset.v; render(); break;
+    case 's-create': { const m = MODAL; MODAL = null; if (G) { if (HRT) HRT.close(); HRT = null; } newGame(m.quiz, m.opts); break; }
+    case 'addq': EDIT.questions.push(blankQ('quiz')); editSave(); render(); window.scrollTo(0, document.body.scrollHeight); break;
+    case 'addtf': EDIT.questions.push(blankQ('tf')); editSave(); render(); window.scrollTo(0, document.body.scrollHeight); break;
+    case 'rep-dl': downloadReport(LS.get('mkq.reports', [])[+el.dataset.i]); break;
+    case 'rep-del': ask(t('del') + '?', () => { const r = LS.get('mkq.reports', []); r.splice(+el.dataset.i, 1); LS.set('mkq.reports', r); }); break;
+    case 'kick': { const p = G.players[el.dataset.pid]; if (p) { p.kicked = true; saveGame(); pushState(); render(); } break; }
+    case 'g-lock': G.locked = !G.locked; saveGame(); pushState(); render(); break;
+    case 'g-cancel': ask(t('confirmCancel'), closeGame); break;
+    case 'g-next': hostNext(); break;
+    case 'g-end': ask(t('confirmEnd'), toPodium); break;
+    case 'g-sound': SOUND = !SOUND; LS.set('mkq.sound', SOUND); render(); break;
+    case 'g-full': if (document.fullscreenElement) document.exitFullscreen(); else if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(() => { }); break;
+    case 'g-report': downloadReport(G); break;
+    case 'g-close': closeGame(); break;
+    case 'p-team': P.team = +el.dataset.v; P.name = ($('#pname').value || P.name); P.err = ''; playerRender(); break;
+    case 'p-go': goName(); break;
+    case 'p-ans': { const i = +el.dataset.v; if (P.st.q.multi) { P.sel = P.sel.includes(i) ? P.sel.filter(x => x !== i) : P.sel.concat(i).sort(); playerRender(); } else playerAnswer([i]); break; }
+    case 'p-submit': if (P.sel.length) playerAnswer(P.sel.slice()); break;
+    case 'p-retry': { const pin = P.pin; playerStop(); playerStart(pin); playerRender(); break; }
+    case 'p-leave': case 'p-home': LS.del('mkq.player'); playerStop(); location.hash = '#/'; render(); break;
+  }
+});
+document.addEventListener('input', e => {
+  const el = e.target;
+  if (el.id === 'hpin') { el.value = el.value.replace(/\D/g, '').slice(0, 6); return; }
+  if (MODAL && MODAL.kind === 'setup') { if (el.dataset.tn != null) MODAL.opts.teams[+el.dataset.tn] = el.value; if (el.dataset.so) MODAL.opts[el.dataset.so] = el.checked; return; }
+  if (!EDIT) return;
+  if (el.id === 'qtitle') { EDIT.title = el.value; editSave(); return; }
+  const card = el.closest('.qcard'); if (!card) return;
+  const i = +card.dataset.qi, q = EDIT.questions[i];
+  if (el.dataset.f === 'text') q.text = el.value;
+  else if (el.dataset.o != null) q.opts[+el.dataset.o] = el.value;
+  else return;
+  editSave(); refreshCard(i);
+});
+document.addEventListener('change', e => {
+  const el = e.target;
+  if (el.id === 'xfile' && el.files[0]) { importFile(el.files[0]); el.value = ''; return; }
+  if (el.id === 'imgfile' && el.files[0] && EDIT && imgTarget >= 0) { loadImage(el.files[0], d => { EDIT.questions[imgTarget].img = d; EDIT.updated = Date.now(); if (!saveQuizzes()) EDIT.questions[imgTarget].img = ''; render(); }); el.value = ''; return; }
+  if (!EDIT) return;
+  const card = el.closest('.qcard'); if (!card) return;
+  const i = +card.dataset.qi, q = EDIT.questions[i];
+  if (el.dataset.f === 'type') { q.type = el.value; q.correct = el.value === 'tf' ? [0] : []; editSave(); render(); }
+  else if (el.dataset.f === 'time') { q.time = +el.value; editSave(); }
+  else if (el.dataset.f === 'pts') { q.pts = +el.value; editSave(); }
+  else if (el.dataset.c != null) { const c = +el.dataset.c; q.correct = el.checked ? [...new Set(q.correct.concat(c))].sort() : q.correct.filter(x => x !== c); editSave(); refreshCard(i); }
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.id === 'hpin') { goJoin(); return; }
+  if (e.key === 'Enter' && e.target.id === 'pname') { goName(); return; }
+  if (route().a === 'game' && G && !MODAL && ['ArrowRight', 'PageDown', ' '].includes(e.key) && (G.phase === 'reveal' || G.phase === 'board')) { e.preventDefault(); hostNext(); }
+});
+document.documentElement.lang = LANG;
+render();
+</script>
+</body>
+</html>
